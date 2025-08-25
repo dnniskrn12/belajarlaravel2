@@ -6,8 +6,10 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Pegawai;
 use App\Models\Jenjang;
+use App\Models\Pend_Pegawai;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class PegawaiController extends Controller
 {
@@ -25,71 +27,49 @@ class PegawaiController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'no_pegawai' => 'required|unique:pegawai,no_pegawai',
-        'nama_pegawai' => 'required',
-        'tempat_lahir' => 'required',
-        'tgl_lahir' => 'required|date',
-        'jenis_kelamin' => 'required',
-        'alamat' => 'required',
-        'agama' => 'required',
-        'no_hp' => 'nullable',
-        'email' => 'nullable|email',
-        'status_kwn' => 'nullable',
-        'status_pekerjaan' => 'nullable',
-        'tgl_masuk' => 'required|date',
-        'tgl_akhir' => 'nullable',
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'pendidikan.*.id_jjg' => 'required',
-        'pendidikan.*.nama_pend' => 'required',
-        'pendidikan.*.thn_pend' => 'required|integer',
-    ]);
+    {
+        Log::info('Isi Request Pendidikan:', $request->pendidikan ?? []);
 
-    // Simpan file foto jika ada
-    $fileName = null;
-    if ($request->hasFile('foto')) {
-        $foto = $request->file('foto');
-        $fileName = Str::uuid() . '.' . $foto->getClientOriginalExtension();
-        Storage::disk('public')->putFileAs('foto_pegawai', $foto, $fileName);
+        // cek semua request
+        Log::info('Isi Request Pegawai:', $request->all());
+        // Simpan data pegawai
+        $pegawai = Pegawai::create($request->only([
+            'no_pegawai',
+            'nama_pegawai',
+            'tempat_lahir',
+            'tgl_lahir',
+            'jenis_kelamin',
+            'alamat',
+            'agama',
+            'no_hp',
+            'email',
+            'status_kwn',
+            'status_pekerjaan',
+            'tgl_masuk',
+            'tgl_akhir',
+            'foto',
+        ]));
+
+        dd($request->nama_pend);
+        // Simpan data pendidikan
+        if ($request->has('pendidikan')) {
+            foreach ($request->pendidikan as $pendidikan) {
+                if (!empty($pendidikan['id_jjg']) || !empty($pendidikan['nama_pend']) || !empty($pendidikan['thn_pend'])) {
+                    Pend_Pegawai::create([
+                        'no_pegawai' => $pegawai->no_pegawai,  // pakai no_pegawai
+                        'id_jjg' => $pendidikan['id_jjg'] ?? null,
+                        'nama_pend' => $pendidikan['nama_pend'] ?? null,
+                        'thn_pend' => $pendidikan['thn_pend'] ?? null,
+                    ]);
+                }
+            }
+        }
+
+
+
+        return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil ditambahkan');
     }
 
-    // Simpan data pegawai dulu
-    $pegawaiData = $request->only([
-        'no_pegawai',
-        'nama_pegawai',
-        'tempat_lahir',
-        'tgl_lahir',
-        'jenis_kelamin',
-        'alamat',
-        'agama',
-        'no_hp',
-        'email',
-        'status_kwn',
-        'status_pekerjaan',
-        'tgl_masuk'
-    ]);
-    $pegawaiData['foto'] = $fileName;
-
-    // Buat pegawai baru
-    $pegawai = Pegawai::create($pegawaiData);
-
-    // Simpan data pendidikan terkait
-    if ($request->has('pendidikan')) {
-    foreach ($request->pendidikan as $pend) {
-        $pegawai->pend_pegawai()->create([
-            'id_jjg' => $pend['id_jjg'],
-            'nama_pend' => $pend['nama_pend'],
-            'thn_pend' => $pend['thn_pend'],
-        ]);
-    }
-}
-
-
-    return redirect()->route('pegawai.index')
-        ->with('success', 'Data pegawai berhasil ditambahkan!');
-}
 
 
     public function show(string $id)
@@ -127,9 +107,9 @@ class PegawaiController extends Controller
             'status_kwn' => 'nullable',
             'status_pekerjaan' => 'nullable',
             'tgl_masuk' => 'required|date',
-            'tgl_akhir'=>'nullable',
+            'tgl_akhir' => 'nullable',
 
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Handle foto
@@ -145,6 +125,8 @@ class PegawaiController extends Controller
         $newRequest['foto'] = $fileName;
 
         $pegawai->update($newRequest);
+
+
 
         return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui!');
     }

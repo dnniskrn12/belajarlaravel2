@@ -12,13 +12,13 @@ return new class extends Migration {
     {
         Schema::create('pend_pegawai', function (Blueprint $table) {
             $table->id(column: 'id_pend_pgw');
-            $table->unsignedBigInteger('no_pegawai'); // relasi ke pegawai
+            $table->string('no_pegawai'); // harus string sesuai pegawai.no_pegawai
             $table->unsignedBigInteger('id_jjg'); // relasi ke jenjang
             $table->string('nama_pend', 100); // contoh: Universitas Andalas
             $table->year('thn_pend'); // tahun lulus
             $table->timestamps();
 
-            $table->foreign('no_pegawai')->references('id')->on('pegawai')->onDelete('cascade');
+            $table->foreign('no_pegawai')->references('no_pegawai')->on('pegawai')->onDelete('cascade');
             $table->foreign('id_jjg')->references('id_jjg')->on('jenjang');
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('pend__pegawai');
+        Schema::dropIfExists('pend_pegawai');
     }
 };

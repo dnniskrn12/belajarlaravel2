@@ -37,4 +37,5 @@ class Pegawai extends Model
     {
         return $this->hasMany(Pend_Pegawai::class, 'no_pegawai', 'no_pegawai');
     }
+
 }

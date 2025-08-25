@@ -53,7 +53,7 @@
 
                             <div class="form-grid">
                                 <div class="form-group-modern">
-                                    <label for="id" class="form-label-modern">
+                                    <label for="no_pegawai" class="form-label-modern">
                                         <i class="mdi mdi-identifier"></i>
                                         Nomor Pegawai
                                         <span class="required">*</span>
@@ -62,7 +62,7 @@
                                         class="form-input-modern @error('no_pegawai') error @enderror"
                                         value="{{ old('no_pegawai') }}" placeholder="Masukkan nomor pegawai" required>
                                     @error('no_pegawai')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -76,7 +76,7 @@
                                         class="form-input-modern @error('nama_pegawai') error @enderror"
                                         value="{{ old('nama_pegawai') }}" placeholder="Masukkan nama lengkap" required>
                                     @error('nama_pegawai')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -90,7 +90,7 @@
                                         class="form-input-modern @error('tempat_lahir') error @enderror"
                                         value="{{ old('tempat_lahir') }}" placeholder="Masukkan tempat lahir" required>
                                     @error('tempat_lahir')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -104,7 +104,7 @@
                                         class="form-input-modern @error('tgl_lahir') error @enderror"
                                         value="{{ old('tgl_lahir') }}" required>
                                     @error('tgl_lahir')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -123,7 +123,7 @@
                                             Perempuan</option>
                                     </select>
                                     @error('jenis_kelamin')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -137,7 +137,7 @@
                                         class="form-input-modern @error('agama') error @enderror" value="{{ old('agama') }}"
                                         placeholder="Masukkan agama" required>
                                     @error('agama')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
                                     class="form-textarea-modern @error('alamat') error @enderror"
                                     placeholder="Masukkan alamat lengkap" rows="3" required>{{ old('alamat') }}</textarea>
                                 @error('alamat')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                                         class="form-input-modern @error('no_hp') error @enderror" value="{{ old('no_hp') }}"
                                         placeholder="Masukkan nomor HP" required>
                                     @error('no_hp')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -190,7 +190,7 @@
                                         class="form-input-modern @error('email') error @enderror" value="{{ old('email') }}"
                                         placeholder="Masukkan alamat email" required>
                                     @error('email')
-                                        <span class="form-error">{{ $message }}</span>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
 
                         <!-- Wrapper Pendidikan -->
                         <div id="pendidikan-wrapper" class="education-wrapper">
-                            <!-- Card Pendidikan Item -->
+                            <!-- Card Pendidikan Item Pertama (index 0 fix) -->
                             <div class="education-item">
                                 <div class="purple-card">
                                     <div class="education-card-header">
@@ -249,11 +249,9 @@
                                                 Tahun Pendidikan
                                                 <span class="required">*</span>
                                             </label>
-                                            <input type="number" name="pendidikan[${educationIndex}][thn_pend]"
-                                                class="form-input-modern" placeholder="Contoh: 2010-2016" min="1980" max="2030"
-                                                required>
+                                            <input type="number" name="pendidikan[0][thn_pend]" class="form-input-modern"
+                                                placeholder="Contoh: 2010" min="1980" max="2030" required>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -267,297 +265,220 @@
                                 <p class="add-education-hint">Tambahkan riwayat pendidikan dari yang terbaru</p>
                             </div>
                         </div>
-                        {{-- Script Tambah/Hapus Pendidikan --}}
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                let educationIndex = 1;
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            let educationIndex = 1; // karena index pertama sudah 0
 
-                                // Function to show toast notification
-                                function showToast(message, type = 'error') {
-                                    const toastContainer = document.getElementById('toast-container');
-                                    const toast = document.createElement('div');
-                                    toast.className = 'toast';
+                            // Update nomor & name input setelah tambah/hapus
+                            function updateEducationNumbers() {
+                                const items = document.querySelectorAll('.education-item');
+                                items.forEach((item, index) => {
+                                    const numberElement = item.querySelector('.education-number span');
+                                    const numberIcon = item.querySelector('.education-number i');
+                                    if (numberElement) numberElement.textContent = `Pendidikan ${index + 1}`;
+                                    if (numberIcon) numberIcon.className = `mdi mdi-numeric-${index + 1}-circle`;
 
-                                    toast.innerHTML = `
-                        <i class="mdi mdi-${type === 'error' ? 'alert-circle' : 'check-circle'}"></i>
-                        <span>${message}</span>
-                    `;
-
-                                    toastContainer.appendChild(toast);
-
-                                    // Remove toast after 5 seconds
-                                    setTimeout(() => {
-                                        toast.remove();
-                                    }, 5000);
-                                }
-
-                                // Function to update education numbers
-                                function updateEducationNumbers() {
-                                    const items = document.querySelectorAll('.education-item');
-                                    items.forEach((item, index) => {
-                                        const numberElement = item.querySelector('.education-number span');
-                                        const numberIcon = item.querySelector('.education-number i');
-                                        if (numberElement) {
-                                            numberElement.textContent = `Pendidikan ${index + 1}`;
+                                    // update semua input name dengan index baru
+                                    const inputs = item.querySelectorAll('input, select');
+                                    inputs.forEach(input => {
+                                        const name = input.getAttribute('name');
+                                        if (name) {
+                                            const newName = name.replace(/\[\d+\]/, `[${index}]`);
+                                            input.setAttribute('name', newName);
                                         }
-                                        if (numberIcon) {
-                                            numberIcon.className = `mdi mdi-numeric-${index + 1}-circle`;
-                                        }
-
-                                        // Update all input names with correct index
-                                        const inputs = item.querySelectorAll('input, select');
-                                        inputs.forEach(input => {
-                                            const name = input.getAttribute('name');
-                                            if (name) {
-                                                const newName = name.replace(/\[\d+\]/g, `[${index}]`);
-                                                input.setAttribute('name', newName);
-                                            }
-                                        });
                                     });
+                                });
+                            }
+
+                            // Tambah pendidikan baru
+                            document.getElementById('add-pendidikan').addEventListener('click', function () {
+                                const wrapper = document.getElementById('pendidikan-wrapper');
+                                const addButtonContainer = this.parentElement;
+
+                                const newItem = document.createElement('div');
+                                newItem.classList.add('education-item');
+
+                                newItem.innerHTML = `
+                <div class="purple-card">
+                    <div class="education-card-header">
+                        <div class="education-number">
+                            <i class="mdi mdi-numeric-${educationIndex + 1}-circle"></i>
+                            <span>Pendidikan ${educationIndex + 1}</span>
+                        </div>
+                        <button type="button" class="btn-remove-education" data-tooltip="Hapus Pendidikan">
+                            <i class="mdi mdi-close"></i>
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="mdi mdi-school-outline"></i>
+                                Jenjang Pendidikan
+                                <span class="required">*</span>
+                            </label>
+                            <select name="pendidikan[${educationIndex}][id_jjg]" class="form-select-modern" required>
+                                <option value="">-- Pilih Jenjang Pendidikan --</option>
+                                @foreach($jenjang as $jjg)
+                                    <option value="{{ $jjg->id_jjg }}">{{ $jjg->nama_jenjang }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="mdi mdi-domain"></i>
+                                Nama Institusi
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" name="pendidikan[${educationIndex}][nama_pend]" class="form-input-modern"
+                                placeholder="Nama Sekolah / Universitas / Institut" required>
+                        </div>
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="mdi mdi-calendar-range"></i>
+                                Tahun Pendidikan
+                                <span class="required">*</span>
+                            </label>
+                            <input type="number" name="pendidikan[${educationIndex}][thn_pend]" class="form-input-modern"
+                                placeholder="Contoh: 2010" min="1980" max="2030" required>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                                wrapper.insertBefore(newItem, addButtonContainer);
+                                educationIndex++;
+                                updateEducationNumbers();
+                            });
+
+                            // Hapus pendidikan
+                            document.addEventListener('click', function (e) {
+                                if (e.target.closest('.btn-remove-education')) {
+                                    const educationItem = e.target.closest('.education-item');
+                                    const educationItems = document.querySelectorAll('.education-item');
+
+                                    if (educationItems.length <= 1) {
+                                        alert('Minimal satu pendidikan harus ada!');
+                                        return;
+                                    }
+
+                                    educationItem.remove();
+                                    updateEducationNumbers();
                                 }
+                            });
 
-                                // Add education event
-                                document.getElementById('add-pendidikan').addEventListener('click', function () {
-                                    const wrapper = document.getElementById('pendidikan-wrapper');
-                                    const addButtonContainer = this.parentElement;
+                            // initial numbering
+                            updateEducationNumbers();
+                        });
+                    </script>
 
-                                    const newItem = document.createElement('div');
-                                    newItem.classList.add('education-item');
 
-                                    newItem.innerHTML = `
+                    <!-- Employment Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <i class="mdi mdi-briefcase"></i>
+                            <h4>Informasi Pekerjaan</h4>
+                        </div>
                         <div class="purple-card">
-                            <div class="education-card-header">
-                                <div class="education-number">
-                                    <i class="mdi mdi-numeric-${educationIndex + 1}-circle"></i>
-                                    <span>Pendidikan ${educationIndex + 1}</span>
-                                </div>
-                                <button type="button" class="btn-remove-education" data-tooltip="Hapus Pendidikan">
-                                    <i class="mdi mdi-close"></i>
-                                </button>
-                            </div>
+
                             <div class="form-grid">
                                 <div class="form-group-modern">
-                                    <label class="form-label-modern">
-                                        <i class="mdi mdi-school-outline"></i>
-                                        Jenjang Pendidikan
+                                    <label for="status_kwn" class="form-label-modern">
+                                        <i class="mdi mdi-heart"></i>
+                                        Status Perkawinan
                                         <span class="required">*</span>
                                     </label>
-                                    <select name="pendidikan[${educationIndex}][id_jjg]" class="form-select-modern" required>
-                                        <option value="">-- Pilih Jenjang Pendidikan --</option>
-                                        <option value="1">SMA</option>
-                                        <option value="2">D3</option>
-                                        <option value="3">S1</option>
-                                        <option value="4">S2</option>
-                                        <option value="5">S3</option>
+                                    <select name="status_kwn" id="status_kwn"
+                                        class="form-select-modern @error('status_kwn') error @enderror" required>
+                                        <option value="">-- Pilih Status --</option>
+                                        <option value="Menikah" {{ old('status_kwn') == 'Menikah' ? 'selected' : '' }}>
+                                            Menikah
+                                        </option>
+                                        <option value="Belum Menikah" {{ old('status_kwn') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
                                     </select>
+                                    @error('status_kwn')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
+
                                 <div class="form-group-modern">
-                                    <label class="form-label-modern">
-                                        <i class="mdi mdi-domain"></i>
-                                        Nama Institusi
+                                    <label for="status_pekerjaan" class="form-label-modern">
+                                        <i class="mdi mdi-account-check"></i>
+                                        Status Pekerjaan
                                         <span class="required">*</span>
                                     </label>
-                                    <input type="text" name="pendidikan[${educationIndex}][nama_pend]" class="form-input-modern"
-                                        placeholder="Nama Sekolah / Universitas / Institut" required>
+                                    <select name="status_pekerjaan" id="status_pekerjaan"
+                                        class="form-select-modern @error('status_pekerjaan') error @enderror" required>
+                                        <option value="">-- Pilih Status --</option>
+                                        <option value="Aktif" {{ old('status_pekerjaan') == 'Aktif' ? 'selected' : '' }}>
+                                            Aktif
+                                        </option>
+                                        <option value="Non Aktif" {{ old('status_pekerjaan') == 'Non Aktif' ? 'selected' : '' }}>Non Aktif</option>
+                                    </select>
+                                    @error('status_pekerjaan')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
+
                                 <div class="form-group-modern">
-                                    <label class="form-label-modern">
+                                    <label for="tgl_masuk" class="form-label-modern">
                                         <i class="mdi mdi-calendar-check"></i>
-                                        Tahun Pendidikan
+                                        Tanggal Masuk
                                         <span class="required">*</span>
                                     </label>
-                                    <input type="number" name="pendidikan[${educationIndex}][thn_pend]" class="form-input-modern"
-                                        placeholder="Contoh: 2010-2016" min="1980" max="2030" required>
+                                    <input type="date" name="tgl_masuk" id="tgl_masuk"
+                                        class="form-input-modern @error('tgl_masuk') error @enderror"
+                                        value="{{ old('tgl_masuk') }}" required>
+                                    @error('tgl_masuk')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
-                            </div>
-                        </div>
-                    `;
 
-                                    // Insert new item before the add button container
-                                    wrapper.insertBefore(newItem, addButtonContainer);
-                                    educationIndex++;
-                                    updateEducationNumbers();
+                                <div class="form-group-modern">
+                                    <label for="tgl_akhir" class="form-label-modern">
+                                        <i class="mdi mdi-calendar-remove"></i>
+                                        Tanggal Akhir
+                                    </label>
+                                    <input type="date" name="tgl_akhir" id="tgl_akhir"
+                                        class="form-input-modern @error('tgl_akhir') error @enderror"
+                                        value="{{ old('tgl_akhir') }}">
 
-                                    // Add entrance animation
-                                    setTimeout(() => {
-                                        newItem.style.opacity = '1';
-                                        newItem.style.transform = 'translateY(0)';
-                                    }, 10);
-                                });
-
-                                // Remove education event
-                                document.addEventListener('click', function (e) {
-                                    if (e.target.closest('.btn-remove-education')) {
-                                        const educationItem = e.target.closest('.education-item');
-                                        const educationItems = document.querySelectorAll('.education-item');
-
-                                        // Don't allow removing the last item
-                                        if (educationItems.length <= 1) {
-                                            showToast('Minimal satu riwayat pendidikan harus ada');
-                                            return;
-                                        }
-
-                                        // Add removing animation
-                                        educationItem.classList.add('removing');
-
-                                        // Remove after animation
-                                        setTimeout(() => {
-                                            educationItem.remove();
-                                            updateEducationNumbers();
-                                        }, 300);
-                                    }
-                                });
-
-                                // Initialize numbers on page load
-                                updateEducationNumbers();
-
-                                // Form validation
-                                const form = document.querySelector('form');
-                                form.addEventListener('submit', function (e) {
-                                    e.preventDefault();
-
-                                    // Basic validation
-                                    const requiredFields = form.querySelectorAll('[required]');
-                                    let isValid = true;
-
-                                    requiredFields.forEach(field => {
-                                        if (!field.value.trim()) {
-                                            field.classList.add('error');
-                                            isValid = false;
-                                        } else {
-                                            field.classList.remove('error');
-                                        }
-                                    });
-
-                                    if (isValid) {
-                                        // Form is valid, you can submit it here
-                                        alert('Form berhasil disubmit!');
-                                        // form.submit(); // Uncomment this to actually submit the form
-                                    } else {
-                                        showToast('Harap lengkapi semua field yang wajib diisi');
-                                    }
-                                });
-
-                                // Remove error class when user starts typing
-                                const inputs = form.querySelectorAll('input, select, textarea');
-                                inputs.forEach(input => {
-                                    input.addEventListener('input', function () {
-                                        if (this.value.trim()) {
-                                            this.classList.remove('error');
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
-
-                        <!-- Employment Information Section -->
-                        <div class="form-section">
-                            <div class="form-section-header">
-                                <i class="mdi mdi-briefcase"></i>
-                                <h4>Informasi Pekerjaan</h4>
-                            </div>
-                            <div class="purple-card">
-
-                                <div class="form-grid">
-                                    <div class="form-group-modern">
-                                        <label for="status_kwn" class="form-label-modern">
-                                            <i class="mdi mdi-heart"></i>
-                                            Status Perkawinan
-                                            <span class="required">*</span>
-                                        </label>
-                                        <select name="status_kwn" id="status_kwn"
-                                            class="form-select-modern @error('status_kwn') error @enderror" required>
-                                            <option value="">-- Pilih Status --</option>
-                                            <option value="Menikah" {{ old('status_kwn') == 'Menikah' ? 'selected' : '' }}>
-                                                Menikah
-                                            </option>
-                                            <option value="Belum Menikah" {{ old('status_kwn') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
-                                        </select>
-                                        @error('status_kwn')
-                                            <span class="form-error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group-modern">
-                                        <label for="status_pekerjaan" class="form-label-modern">
-                                            <i class="mdi mdi-account-check"></i>
-                                            Status Pekerjaan
-                                            <span class="required">*</span>
-                                        </label>
-                                        <select name="status_pekerjaan" id="status_pekerjaan"
-                                            class="form-select-modern @error('status_pekerjaan') error @enderror" required>
-                                            <option value="">-- Pilih Status --</option>
-                                            <option value="Aktif" {{ old('status_pekerjaan') == 'Aktif' ? 'selected' : '' }}>
-                                                Aktif
-                                            </option>
-                                            <option value="Non Aktif" {{ old('status_pekerjaan') == 'Non Aktif' ? 'selected' : '' }}>
-                                                Non Aktif</option>
-                                        </select>
-                                        @error('status_pekerjaan')
-                                            <span class="form-error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group-modern">
-                                        <label for="tgl_masuk" class="form-label-modern">
-                                            <i class="mdi mdi-calendar-check"></i>
-                                            Tanggal Masuk
-                                            <span class="required">*</span>
-                                        </label>
-                                        <input type="date" name="tgl_masuk" id="tgl_masuk"
-                                            class="form-input-modern @error('tgl_masuk') error @enderror"
-                                            value="{{ old('tgl_masuk') }}" required>
-                                        @error('tgl_masuk')
-                                            <span class="form-error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group-modern">
-                                        <label for="tgl_akhir" class="form-label-modern">
-                                            <i class="mdi mdi-calendar-remove"></i>
-                                            Tanggal Akhir
-                                        </label>
-                                        <input type="date" name="tgl_akhir" id="tgl_akhir"
-                                            class="form-input-modern @error('tgl_akhir') error @enderror"
-                                            value="{{ old('tgl_akhir') }}">
-                                        @error('tgl_akhir')
-                                            <span class="form-error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group-modern">
-                                        <label for="foto" class="form-label-modern">
-                                            <i class="mdi mdi-camera"></i>
-                                            Foto Pegawai
-                                        </label>
-                                        <div class="file-upload-modern">
-                                            <input type="file" name="foto" id="foto"
-                                                class="file-input-modern @error('foto') error @enderror" accept="image/*">
-                                            <label for="foto" class="file-label-modern">
-                                                <i class="mdi mdi-cloud-upload"></i>
-                                                <span>Pilih foto atau drag & drop</span>
-                                                <small>Format: JPG, PNG, GIF (Max: 2MB)</small>
-                                            </label>
-                                        </div>
-                                        @error('foto')
-                                            <span class="form-error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
                                 </div>
+
+                                <div class="form-group-modern">
+                                    <label for="foto" class="form-label-modern">
+                                        <i class="mdi mdi-camera"></i>
+                                        Foto Pegawai
+                                    </label>
+                                    <div class="file-upload-modern">
+                                        <input type="file" name="foto" id="foto"
+                                            class="file-input-modern @error('foto') error @enderror" accept="image/*">
+                                        <label for="foto" class="file-label-modern">
+                                            <i class="mdi mdi-cloud-upload"></i>
+                                            <span>Pilih foto atau drag & drop</span>
+                                            <small>Format: JPG, PNG, GIF (Max: 2MB)</small>
+                                        </label>
+                                    </div>
+                                    @error('foto')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    {{--
+                                </div> --}}
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Action Buttons -->
-                        <div class="form-actions">
-                            <a href="{{ route('pegawai.index') }}" class="btn-cancel">
-                                <i class="mdi mdi-close"></i>
-                                Batal
-                            </a>
-                            <button type="submit" class="btn-submit bg-gradient-primary">
-                                <i class="mdi mdi-content-save"></i>
-                                Simpan Data
-                            </button>
-                        </div>
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <a href="{{ route('pegawai.index') }}" class="btn-cancel">
+                            <i class="mdi mdi-close"></i>
+                            Batal
+                        </a>
+                        <button type="submit" class="btn-submit bg-gradient-primary">
+                            <i class="mdi mdi-content-save"></i>
+                            Simpan Data
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
