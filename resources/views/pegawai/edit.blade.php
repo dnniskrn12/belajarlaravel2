@@ -4,14 +4,14 @@
     <div class="container-modern">
         <!-- Header Section -->
         <div class="header-section">
-            <div class="header-top" style="display: flex; align-items: center; justify-content: space-between;">
-                <div class="header-title" style="display: flex; align-items: center; gap: 12px;">
+            <div class="header-top d-flex justify-content-between align-items-center">
+                <div class="header-title d-flex align-items-center gap-2">
                     <div class="header-icon bg-gradient-primary">
                         <i class="mdi mdi-account-edit"></i>
                     </div>
                     <div>
-                        <h1 class="page-title-modern" style="margin:0;">Edit Pegawai</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Ubah data pegawai {{ $pegawai->nama_pegawai }}</p>
+                        <h1 class="page-title-modern mb-0">Edit Pegawai</h1>
+                        <p class="page-subtitle-modern mb-0">Ubah data pegawai {{ $pegawai->nama_pegawai }}</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
@@ -23,12 +23,9 @@
                 </div>
             </div>
             <div class="action-bar">
-                <div class="action-buttons">
-                    <a href="{{ route('pegawai.index') }}" class="btn-filter">
-                        <i class="mdi mdi-arrow-left"></i>
-                        Kembali
-                    </a>
-                </div>
+                <a href="{{ route('pegawai.index') }}" class="btn-filter">
+                    <i class="mdi mdi-arrow-left"></i> Kembali
+                </a>
             </div>
         </div>
 
@@ -45,7 +42,7 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Personal Information Section -->
+                    <!-- Personal Information -->
                     <div class="form-section">
                         <div class="form-section-header">
                             <i class="mdi mdi-account"></i>
@@ -55,8 +52,7 @@
                             <div class="form-grid">
                                 <div class="form-group-modern">
                                     <label for="no_pegawai" class="form-label-modern">
-                                        <i class="mdi mdi-identifier"></i>
-                                        Nomor Pegawai
+                                        <i class="mdi mdi-identifier"></i> Nomor Pegawai
                                         <span class="readonly-badge">Read-only</span>
                                     </label>
                                     <input type="text" name="no_pegawai" id="no_pegawai"
@@ -69,13 +65,13 @@
 
                                 <div class="form-group-modern">
                                     <label for="nama_pegawai" class="form-label-modern">
-                                        <i class="mdi mdi-account-outline"></i>
-                                        Nama Lengkap
+                                        <i class="mdi mdi-account-outline"></i> Nama Lengkap
                                         <span class="required">*</span>
                                     </label>
                                     <input type="text" name="nama_pegawai" id="nama_pegawai"
                                         class="form-input-modern @error('nama_pegawai') error @enderror"
-                                        value="{{ $pegawai->nama_pegawai }}" placeholder="Masukkan nama lengkap" required>
+                                        value="{{ old('nama_pegawai', $pegawai->nama_pegawai) }}"
+                                        placeholder="Masukkan nama lengkap" required>
                                     @error('nama_pegawai')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -83,13 +79,13 @@
 
                                 <div class="form-group-modern">
                                     <label for="tempat_lahir" class="form-label-modern">
-                                        <i class="mdi mdi-map-marker"></i>
-                                        Tempat Lahir
+                                        <i class="mdi mdi-map-marker"></i> Tempat Lahir
                                         <span class="required">*</span>
                                     </label>
                                     <input type="text" name="tempat_lahir" id="tempat_lahir"
                                         class="form-input-modern @error('tempat_lahir') error @enderror"
-                                        value="{{ $pegawai->tempat_lahir }}" placeholder="Masukkan tempat lahir" required>
+                                        value="{{ old('tempat_lahir', $pegawai->tempat_lahir) }}"
+                                        placeholder="Masukkan tempat lahir" required>
                                     @error('tempat_lahir')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -97,13 +93,12 @@
 
                                 <div class="form-group-modern">
                                     <label for="tgl_lahir" class="form-label-modern">
-                                        <i class="mdi mdi-calendar"></i>
-                                        Tanggal Lahir
+                                        <i class="mdi mdi-calendar"></i> Tanggal Lahir
                                         <span class="required">*</span>
                                     </label>
                                     <input type="date" name="tgl_lahir" id="tgl_lahir"
                                         class="form-input-modern @error('tgl_lahir') error @enderror"
-                                        value="{{ $pegawai->tgl_lahir }}" required>
+                                        value="{{ old('tgl_lahir', $pegawai->tgl_lahir) }}" required>
                                     @error('tgl_lahir')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -111,17 +106,14 @@
 
                                 <div class="form-group-modern">
                                     <label for="jenis_kelamin" class="form-label-modern">
-                                        <i class="mdi mdi-gender-male-female"></i>
-                                        Jenis Kelamin
+                                        <i class="mdi mdi-gender-male-female"></i> Jenis Kelamin
                                         <span class="required">*</span>
                                     </label>
                                     <select name="jenis_kelamin" id="jenis_kelamin"
                                         class="form-select-modern @error('jenis_kelamin') error @enderror" required>
                                         <option value="">-- Pilih Jenis Kelamin --</option>
-                                        <option value="Laki-laki" {{ $pegawai->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>
-                                            Laki-laki</option>
-                                        <option value="Perempuan" {{ $pegawai->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
-                                            Perempuan</option>
+                                        <option value="Laki-laki" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="Perempuan" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                     </select>
                                     @error('jenis_kelamin')
                                         <span class="form-error">{{ $message }}</span>
@@ -130,13 +122,12 @@
 
                                 <div class="form-group-modern">
                                     <label for="agama" class="form-label-modern">
-                                        <i class="mdi mdi-book-open-variant"></i>
-                                        Agama
+                                        <i class="mdi mdi-book-open-variant"></i> Agama
                                         <span class="required">*</span>
                                     </label>
                                     <input type="text" name="agama" id="agama"
-                                        class="form-input-modern @error('agama') error @enderror" value="{{ $pegawai->agama }}"
-                                        placeholder="Masukkan agama" required>
+                                        class="form-input-modern @error('agama') error @enderror"
+                                        value="{{ old('agama', $pegawai->agama) }}" required>
                                     @error('agama')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -145,13 +136,12 @@
 
                             <div class="form-group-modern full-width">
                                 <label for="alamat" class="form-label-modern">
-                                    <i class="mdi mdi-home"></i>
-                                    Alamat
+                                    <i class="mdi mdi-home"></i> Alamat
                                     <span class="required">*</span>
                                 </label>
                                 <textarea name="alamat" id="alamat"
-                                    class="form-textarea-modern @error('alamat') error @enderror"
-                                    placeholder="Masukkan alamat lengkap" rows="3" required>{{ $pegawai->alamat }}</textarea>
+                                    class="form-textarea-modern @error('alamat') error @enderror" rows="3"
+                                    required>{{ old('alamat', $pegawai->alamat) }}</textarea>
                                 @error('alamat')
                                     <span class="form-error">{{ $message }}</span>
                                 @enderror
@@ -159,7 +149,7 @@
                         </div>
                     </div>
 
-                    <!-- Contact Information Section -->
+                    <!-- Contact Information -->
                     <div class="form-section">
                         <div class="form-section-header">
                             <i class="mdi mdi-phone"></i>
@@ -169,13 +159,11 @@
                             <div class="form-grid">
                                 <div class="form-group-modern">
                                     <label for="no_hp" class="form-label-modern">
-                                        <i class="mdi mdi-cellphone"></i>
-                                        No HP
-                                        <span class="required">*</span>
+                                        <i class="mdi mdi-cellphone"></i> No HP
                                     </label>
                                     <input type="text" name="no_hp" id="no_hp"
-                                        class="form-input-modern @error('no_hp') error @enderror" value="{{ $pegawai->no_hp }}"
-                                        placeholder="Masukkan nomor HP" required>
+                                        class="form-input-modern @error('no_hp') error @enderror"
+                                        value="{{ old('no_hp', $pegawai->no_hp) }}">
                                     @error('no_hp')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -183,13 +171,11 @@
 
                                 <div class="form-group-modern">
                                     <label for="email" class="form-label-modern">
-                                        <i class="mdi mdi-email"></i>
-                                        Email
-                                        <span class="required">*</span>
+                                        <i class="mdi mdi-email"></i> Email
                                     </label>
                                     <input type="email" name="email" id="email"
-                                        class="form-input-modern @error('email') error @enderror" value="{{ $pegawai->email }}"
-                                        placeholder="Masukkan alamat email" required>
+                                        class="form-input-modern @error('email') error @enderror"
+                                        value="{{ old('email', $pegawai->email) }}">
                                     @error('email')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
@@ -198,7 +184,72 @@
                         </div>
                     </div>
 
+                    <!-- Pendidikan -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <i class="mdi mdi-school"></i>
+                            <h4>Informasi Pendidikan</h4>
+                        </div>
+                        <div id="pendidikan-wrapper" class="education-wrapper">
+                            @foreach($pegawai->pend_pegawai as $i => $pend)
+                                <div class="education-item">
+                                    <div class="purple-card">
+                                        <div class="education-card-header">
+                                            <div class="education-number">
+                                                <i class="mdi mdi-numeric-{{ $i + 1 }}-circle"></i>
+                                                <span>Pendidikan {{ $i + 1 }}</span>
+                                            </div>
+                                            <button type="button" class="btn-remove-education" data-tooltip="Hapus Pendidikan">
+                                                <i class="mdi mdi-close"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="form-grid">
+                                            <div class="form-group-modern">
+                                                <label class="form-label-modern">Jenjang Pendidikan <span
+                                                        class="required">*</span></label>
+                                                <select name="pendidikan[{{ $i }}][id_jjg]" class="form-select-modern" required>
+                                                    <option value="">-- Pilih Jenjang Pendidikan --</option>
+                                                    @foreach($jenjang as $jjg)
+                                                        <option value="{{ $jjg->id_jjg }}" {{ $pend->id_jjg == $jjg->id_jjg ? 'selected' : '' }}>{{ $jjg->nama_jenjang }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group-modern">
+                                                <label class="form-label-modern">Nama Pendidikan</label>
+                                                <input type="text" name="pendidikan[{{ $i }}][nama_pend]"
+                                                    class="form-input-modern" value="{{ $pend->nama_pend }}">
+                                            </div>
+
+                                            <div class="form-group-modern">
+                                                <label class="form-label-modern">Tahun Pendidikan</label>
+                                                <input type="number" name="pendidikan[{{ $i }}][thn_pend]"
+                                                    class="form-input-modern" value="{{ $pend->thn_pend }}">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            <div class="add-education-container">
+                                <button type="button" class="btn-add-education" id="add-pendidikan">
+                                    <i class="mdi mdi-plus-circle"></i>
+                                    <span>Tambah Pendidikan</span>
+                                </button>
+                                <p class="add-education-hint">Tambahkan riwayat pendidikan dari yang terbaru</p>
+                            </div>
+                            <div id="jenjang-options" style="display:none;">
+                                @foreach($jenjang as $jjg)
+
+                                    <option value="">-- Pilih Jenjang Pendidikan --</option>
+                                    <option value="{{ $jjg->id_jjg }}">{{ $jjg->nama_jenjang }}</option>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                     <!-- Employment Information Section -->
+                    <!-- Informasi Pekerjaan -->
                     <div class="form-section">
                         <div class="form-section-header">
                             <i class="mdi mdi-briefcase"></i>
@@ -206,11 +257,10 @@
                         </div>
                         <div class="purple-card">
                             <div class="form-grid">
+                                <!-- Status Perkawinan -->
                                 <div class="form-group-modern">
                                     <label for="status_kwn" class="form-label-modern">
-                                        <i class="mdi mdi-heart"></i>
-                                        Status Perkawinan
-                                        <span class="required">*</span>
+                                        <i class="mdi mdi-heart"></i> Status Perkawinan <span class="required">*</span>
                                     </label>
                                     <select name="status_kwn" id="status_kwn"
                                         class="form-select-modern @error('status_kwn') error @enderror" required>
@@ -218,95 +268,71 @@
                                         <option value="Menikah" {{ old('status_kwn', $pegawai->status_kwn) == 'Menikah' ? 'selected' : '' }}>Menikah</option>
                                         <option value="Belum Menikah" {{ old('status_kwn', $pegawai->status_kwn) == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
                                     </select>
-                                    @error('status_kwn')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
+                                    @error('status_kwn') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
+                                <!-- Status Pekerjaan -->
                                 <div class="form-group-modern">
                                     <label for="status_pekerjaan" class="form-label-modern">
-                                        <i class="mdi mdi-account-check"></i>
-                                        Status Pekerjaan
-                                        <span class="required">*</span>
+                                        <i class="mdi mdi-account-check"></i> Status Pekerjaan <span
+                                            class="required">*</span>
                                     </label>
                                     <select name="status_pekerjaan" id="status_pekerjaan"
                                         class="form-select-modern @error('status_pekerjaan') error @enderror" required>
                                         <option value="">-- Pilih Status --</option>
-                                        <option value="Aktif" {{ $pegawai->status_pekerjaan == 'Aktif' ? 'selected' : '' }}>Aktif
-                                        </option>
-                                        <option value="Non Aktif" {{ $pegawai->status_pekerjaan == 'Non Aktif' ? 'selected' : '' }}>Non Aktif</option>
+                                        <option value="Aktif" {{ old('status_pekerjaan', $pegawai->status_pekerjaan) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                        <option value="Non Aktif" {{ old('status_pekerjaan', $pegawai->status_pekerjaan) == 'Non Aktif' ? 'selected' : '' }}>Non Aktif</option>
                                     </select>
-                                    @error('status_pekerjaan')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
+                                    @error('status_pekerjaan') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
+                                <!-- Tanggal Masuk -->
                                 <div class="form-group-modern">
                                     <label for="tgl_masuk" class="form-label-modern">
-                                        <i class="mdi mdi-calendar-check"></i>
-                                        Tanggal Masuk
-                                        <span class="required">*</span>
+                                        <i class="mdi mdi-calendar-check"></i> Tanggal Masuk <span class="required">*</span>
                                     </label>
                                     <input type="date" name="tgl_masuk" id="tgl_masuk"
                                         class="form-input-modern @error('tgl_masuk') error @enderror"
-                                        value="{{ $pegawai->tgl_masuk }}" required>
-                                    @error('tgl_masuk')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
+                                        value="{{ old('tgl_masuk', $pegawai->tgl_masuk) }}" required>
+                                    @error('tgl_masuk') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
+                                <!-- Tanggal Akhir -->
                                 <div class="form-group-modern">
                                     <label for="tgl_akhir" class="form-label-modern">
-                                        <i class="mdi mdi-calendar-remove"></i>
-                                        Tanggal Akhir
+                                        <i class="mdi mdi-calendar-remove"></i> Tanggal Akhir
                                     </label>
                                     <input type="date" name="tgl_akhir" id="tgl_akhir"
                                         class="form-input-modern @error('tgl_akhir') error @enderror"
-                                        value="{{ old('tgl_akhir') }}">
-                                    @error('tgl_akhir')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
+                                        value="{{ old('tgl_akhir', $pegawai->tgl_akhir) }}">
+                                    @error('tgl_akhir') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
+                                <!-- Foto -->
                                 <div class="form-group-modern">
                                     <label for="foto" class="form-label-modern">
-                                        <i class="mdi mdi-camera"></i>
-                                        Foto Pegawai
+                                        <i class="mdi mdi-camera"></i> Foto Pegawai <span class="required">*</span>
                                     </label>
+                                    <div class="foto-preview mb-2 text-center">
+                                        <img id="preview-foto" src="{{ $pegawai->foto ? asset('storage/foto_pegawai/' . $pegawai->foto)
+        : asset('template/dist/assets/images/default.png') }}" alt="Preview Foto"
+                                            style="max-height:150px; width:auto; border:1px solid #ccc; padding:5px;">
+                                    </div>
                                     <div class="file-upload-modern">
                                         <input type="file" name="foto" id="foto"
                                             class="file-input-modern @error('foto') error @enderror" accept="image/*">
                                         <label for="foto" class="file-label-modern">
                                             <i class="mdi mdi-cloud-upload"></i>
-                                            <span>Ganti foto atau drag & drop</span>
+                                            <span>Pilih foto atau drag & drop</span>
                                             <small>Format: JPG, PNG, GIF (Max: 2MB)</small>
                                         </label>
                                     </div>
-                                    @error('foto')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
-
-                                    @if(!empty($pegawai->foto))
-                                        <div class="current-photo">
-                                            <label class="current-photo-label">
-                                                <i class="mdi mdi-image"></i>
-                                                Foto Saat Ini
-                                            </label>
-                                            <div class="photo-preview">
-                                                <img src="{{ asset('storage/foto_pegawai/' . $pegawai->foto) }}" alt="Foto Pegawai">
-                                                <div class="photo-info">
-                                                    <span>{{ $pegawai->nama_pegawai }}</span>
-                                                    <small>{{ $pegawai->no_pegawai }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
+                                    @error('foto') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="form-actions">
                         <a href="{{ route('pegawai.index') }}" class="btn-cancel">
                             <i class="mdi mdi-close"></i>
@@ -314,11 +340,13 @@
                         </a>
                         <button type="submit" class="btn-submit bg-gradient-primary">
                             <i class="mdi mdi-content-save"></i>
-                            Update Data
+                            Simpan Perubahan
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+
 @endsection

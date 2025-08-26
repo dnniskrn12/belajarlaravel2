@@ -28,6 +28,7 @@
                 ['label' => 'Sertifikat', 'url' => url('pages/ui-features/dropdowns.html')],
             ]" />
 
+
             <x-sidebar.links title='Logout' icon='mdi mdi-logout menu-icon text-danger' route='logout' />
 
 

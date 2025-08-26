@@ -13,17 +13,17 @@ class PegawaiSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $status = $faker->randomElement(['Aktif', 'Non Aktif']);
 
             Pegawai::create([
                 'no_pegawai' => 'PEG' . $faker->unique()->numberBetween(100, 999),
                 'nama_pegawai' => $faker->name,
                 'tempat_lahir' => $faker->city,
-                'tgl_lahir' => $faker->date('Y-m-d', '-20 years'),
+                'tgl_lahir' => $faker->date('Y-m-d', '-40 years'),
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
                 'alamat' => $faker->address,
-                'agama' => $faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Konghucu']),
+                'agama' => $faker->randomElement(['Islam', 'Kristen Protestan', 'Katholik', 'Hindu', 'Budha', 'Konghucu']),
                 'no_hp' => $faker->phoneNumber,
                 'email' => $faker->unique()->safeEmail,
                 'status_kwn' => $faker->randomElement(['Menikah', 'Belum Menikah']),
@@ -32,9 +32,8 @@ class PegawaiSeeder extends Seeder
                 'tgl_akhir' => $status === 'Non Aktif'
                     ? $faker->dateTimeBetween('-1 years', 'now')->format('Y-m-d')
                     : null,
-                'foto' => 'default.jpg',
+                'foto' => 'default.png',
             ]);
         }
     }
 }
-

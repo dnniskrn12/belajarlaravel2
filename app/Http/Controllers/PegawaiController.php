@@ -28,35 +28,33 @@ class PegawaiController extends Controller
 
     public function store(Request $request)
     {
-        Log::info('Isi Request Pendidikan:', $request->pendidikan ?? []);
+        // Validasi input
+        $validated = $request->validate([
+            'no_pegawai' => 'required|string|max:50|unique:pegawai,no_pegawai',
+            'nama_pegawai' => 'required|string|max:100',
+            'tempat_lahir' => 'required|string|max:100',
+            'tgl_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'alamat' => 'required|string',
+            'agama' => 'required|in:Islam,Kristen Protestan,Katholik,Hindu,Budha,Konghucu',
+            'no_hp' => 'required|string|max:20',
+            'email' => 'required|email|max:100',
+            'status_kwn' => 'required|string',
+            'status_pekerjaan' => 'required|string',
+            'tgl_masuk' => 'required|date',
+            'tgl_akhir' => 'nullable|date',
+            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-        // cek semua request
-        Log::info('Isi Request Pegawai:', $request->all());
         // Simpan data pegawai
-        $pegawai = Pegawai::create($request->only([
-            'no_pegawai',
-            'nama_pegawai',
-            'tempat_lahir',
-            'tgl_lahir',
-            'jenis_kelamin',
-            'alamat',
-            'agama',
-            'no_hp',
-            'email',
-            'status_kwn',
-            'status_pekerjaan',
-            'tgl_masuk',
-            'tgl_akhir',
-            'foto',
-        ]));
+        $pegawai = Pegawai::create($validated);
 
-        dd($request->nama_pend);
         // Simpan data pendidikan
         if ($request->has('pendidikan')) {
             foreach ($request->pendidikan as $pendidikan) {
                 if (!empty($pendidikan['id_jjg']) || !empty($pendidikan['nama_pend']) || !empty($pendidikan['thn_pend'])) {
                     Pend_Pegawai::create([
-                        'no_pegawai' => $pegawai->no_pegawai,  // pakai no_pegawai
+                        'no_pegawai' => $pegawai->no_pegawai,
                         'id_jjg' => $pendidikan['id_jjg'] ?? null,
                         'nama_pend' => $pendidikan['nama_pend'] ?? null,
                         'thn_pend' => $pendidikan['thn_pend'] ?? null,
@@ -65,10 +63,10 @@ class PegawaiController extends Controller
             }
         }
 
-
-
-        return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil ditambahkan');
+        return redirect()->route('pegawai.index')
+            ->with('success', 'Data pegawai berhasil ditambahkan');
     }
+
 
 
 
@@ -82,7 +80,9 @@ class PegawaiController extends Controller
     public function edit(string $id)
     {
         $pegawai = Pegawai::findOrFail($id);
+        $pegawai->load('pend_pegawai');
         $jenjang = Jenjang::all();
+
         return view('pegawai.edit', compact('pegawai', 'jenjang'));
     }
 
@@ -90,46 +90,37 @@ class PegawaiController extends Controller
     {
         $pegawai = Pegawai::findOrFail($id);
 
-        // Validasi input
-        $request->validate([
-            'no_pegawai' => [
-                'required',
-                Rule::unique('pegawai', 'no_pegawai')->ignore($pegawai->no_pegawai, 'no_pegawai')
-            ],
-            'nama_pegawai' => 'required',
-            'tempat_lahir' => 'required',
-            'tgl_lahir' => 'required|date',
-            'jenis_kelamin' => 'required',
-            'alamat' => 'required',
-            'agama' => 'required',
-            'no_hp' => 'nullable',
-            'email' => 'nullable|email',
-            'status_kwn' => 'nullable',
-            'status_pekerjaan' => 'nullable',
-            'tgl_masuk' => 'required|date',
-            'tgl_akhir' => 'nullable',
+        // update data pegawai
+        $pegawai->update($request->except(['pendidikan', 'foto']));
 
-            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        // handle foto baru
+        if ($request->hasFile('foto')) {
+            $fotoName = time() . '.' . $request->foto->extension();
+            $request->foto->storeAs('foto_pegawai', $fotoName, 'public');
 
-        // Handle foto
-        $fileName = $pegawai->foto;
-        $foto = $request->file('foto');
-        if ($foto) {
-            $fileName = Str::uuid() . '.' . $foto->getClientOriginalExtension();
-            Storage::disk('public')->putFileAs('foto_pegawai', $foto, $fileName);
+            // hapus foto lama kalau ada
+            if ($pegawai->foto) {
+                Storage::disk('public')->delete('foto_pegawai/' . $pegawai->foto);
+            }
+
+            $pegawai->foto = $fotoName;
+            $pegawai->save();
         }
 
-        // Ambil semua input dan tambahkan nama file foto
-        $newRequest = $request->all();
-        $newRequest['foto'] = $fileName;
+        // handle pendidikan (hapus lama, simpan baru)
+        if ($request->has('pendidikan')) {
+            // hapus riwayat lama
+            $pegawai->pend_pegawai()->delete();
 
-        $pegawai->update($newRequest);
-
-
+            // simpan ulang
+            foreach ($request->pendidikan as $pend) {
+                $pegawai->pend_pegawai()->create($pend);
+            }
+        }
 
         return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui!');
     }
+
 
 
     public function destroy(string $id)

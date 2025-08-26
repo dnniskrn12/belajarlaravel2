@@ -12,11 +12,12 @@
     <link rel="shortcut icon" href="{{ asset('template/dist/assets/images/favicon.png') }}" />
 
     <!-- Core CSS (vendors) -->
-    <link rel="stylesheet" href="{{ asset('css/modern.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/css/modern.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/vendors/ti-icons/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/vendors/css/vendor.bundle.base.css') }}">
+
 
     <!-- Plugins CSS -->
     <link rel="stylesheet"
@@ -35,21 +36,7 @@
 
 <body>
     <div class="container-scroller">
-        <div class="row p-0 m-0 proBanner" id="proBanner">
-            <div class="col-md-12 p-0 m-0">
-                <div class="card-body card-body-padding d-flex align-items-center justify-content-between">
-                    <div class="ps-lg-3">
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <a href="https://www.bootstrapdash.com/product/purple-bootstrap-admin-template/"><i
-                                class="mdi mdi-home me-3 text-white"></i></a>
-                        <button id="bannerClose" class="btn border-0 p-0">
-                            <i class="mdi mdi-close text-white mr-0"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
@@ -93,6 +80,7 @@
         <script src="{{asset('template/dist')}}/assets/js/todolist.js"></script>
         <script src="{{asset('template/dist')}}/assets/js/jquery.cookie.js"></script>
         <script src="{{asset('template/dist')}}/assets/js/dashboard.js"></script>
+        <script src="{{ asset('build/assets/js/script.js') }}"></script>
 
         <!-- DataTables and SweetAlert -->
         <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>

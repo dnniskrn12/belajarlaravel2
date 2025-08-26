@@ -16,10 +16,10 @@
                 </div>
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
-            ['label' => 'Dashboard', 'route' => 'home'],
-            ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-            ['label' => 'Tambah', 'route' => 'pegawai.create'],
-        ]" />
+                        ['label' => 'Dashboard', 'route' => 'home'],
+                        ['label' => 'Pegawai', 'route' => 'pegawai.index'],
+                        ['label' => 'Tambah', 'route' => 'pegawai.create'],
+                    ]" />
                 </div>
             </div>
             <div class="action-bar">
@@ -133,13 +133,24 @@
                                         Agama
                                         <span class="required">*</span>
                                     </label>
-                                    <input type="text" name="agama" id="agama"
-                                        class="form-input-modern @error('agama') error @enderror" value="{{ old('agama') }}"
-                                        placeholder="Masukkan agama" required>
+                                    <select name="agama" id="agama"
+                                        class="form-input-modern @error('agama') error @enderror" required>
+                                        <option value="">-- Pilih Agama --</option>
+                                        <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                        <option value="Kristen Protestan" {{ old('agama') == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan
+                                        </option>
+                                        <option value="Katholik" {{ old('agama') == 'Katholik' ? 'selected' : '' }}>Katholik
+                                        </option>
+                                        <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                        <option value="Budha" {{ old('agama') == 'Budha' ? 'selected' : '' }}>Budha</option>
+                                        <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                        </option>
+                                    </select>
                                     @error('agama')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+
                             </div>
 
                             <div class="form-group-modern full-width">
@@ -205,7 +216,6 @@
 
                         <!-- Wrapper Pendidikan -->
                         <div id="pendidikan-wrapper" class="education-wrapper">
-                            <!-- Card Pendidikan Item Pertama (index 0 fix) -->
                             <div class="education-item">
                                 <div class="purple-card">
                                     <div class="education-card-header">
@@ -266,113 +276,12 @@
                             </div>
                         </div>
                     </div>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            let educationIndex = 1; // karena index pertama sudah 0
-
-                            // Update nomor & name input setelah tambah/hapus
-                            function updateEducationNumbers() {
-                                const items = document.querySelectorAll('.education-item');
-                                items.forEach((item, index) => {
-                                    const numberElement = item.querySelector('.education-number span');
-                                    const numberIcon = item.querySelector('.education-number i');
-                                    if (numberElement) numberElement.textContent = `Pendidikan ${index + 1}`;
-                                    if (numberIcon) numberIcon.className = `mdi mdi-numeric-${index + 1}-circle`;
-
-                                    // update semua input name dengan index baru
-                                    const inputs = item.querySelectorAll('input, select');
-                                    inputs.forEach(input => {
-                                        const name = input.getAttribute('name');
-                                        if (name) {
-                                            const newName = name.replace(/\[\d+\]/, `[${index}]`);
-                                            input.setAttribute('name', newName);
-                                        }
-                                    });
-                                });
-                            }
-
-                            // Tambah pendidikan baru
-                            document.getElementById('add-pendidikan').addEventListener('click', function () {
-                                const wrapper = document.getElementById('pendidikan-wrapper');
-                                const addButtonContainer = this.parentElement;
-
-                                const newItem = document.createElement('div');
-                                newItem.classList.add('education-item');
-
-                                newItem.innerHTML = `
-                <div class="purple-card">
-                    <div class="education-card-header">
-                        <div class="education-number">
-                            <i class="mdi mdi-numeric-${educationIndex + 1}-circle"></i>
-                            <span>Pendidikan ${educationIndex + 1}</span>
-                        </div>
-                        <button type="button" class="btn-remove-education" data-tooltip="Hapus Pendidikan">
-                            <i class="mdi mdi-close"></i>
-                        </button>
+                    <div id="jenjang-options" style="display:none;">
+                        <option value="">-- Pilih Jenjang Pendidikan --</option>
+                        @foreach($jenjang as $jjg)
+                            <option value="{{ $jjg->id_jjg }}">{{ $jjg->nama_jenjang }}</option>
+                        @endforeach
                     </div>
-                    <div class="form-grid">
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="mdi mdi-school-outline"></i>
-                                Jenjang Pendidikan
-                                <span class="required">*</span>
-                            </label>
-                            <select name="pendidikan[${educationIndex}][id_jjg]" class="form-select-modern" required>
-                                <option value="">-- Pilih Jenjang Pendidikan --</option>
-                                @foreach($jenjang as $jjg)
-                                    <option value="{{ $jjg->id_jjg }}">{{ $jjg->nama_jenjang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="mdi mdi-domain"></i>
-                                Nama Institusi
-                                <span class="required">*</span>
-                            </label>
-                            <input type="text" name="pendidikan[${educationIndex}][nama_pend]" class="form-input-modern"
-                                placeholder="Nama Sekolah / Universitas / Institut" required>
-                        </div>
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="mdi mdi-calendar-range"></i>
-                                Tahun Pendidikan
-                                <span class="required">*</span>
-                            </label>
-                            <input type="number" name="pendidikan[${educationIndex}][thn_pend]" class="form-input-modern"
-                                placeholder="Contoh: 2010" min="1980" max="2030" required>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-                                wrapper.insertBefore(newItem, addButtonContainer);
-                                educationIndex++;
-                                updateEducationNumbers();
-                            });
-
-                            // Hapus pendidikan
-                            document.addEventListener('click', function (e) {
-                                if (e.target.closest('.btn-remove-education')) {
-                                    const educationItem = e.target.closest('.education-item');
-                                    const educationItems = document.querySelectorAll('.education-item');
-
-                                    if (educationItems.length <= 1) {
-                                        alert('Minimal satu pendidikan harus ada!');
-                                        return;
-                                    }
-
-                                    educationItem.remove();
-                                    updateEducationNumbers();
-                                }
-                            });
-
-                            // initial numbering
-                            updateEducationNumbers();
-                        });
-                    </script>
-
-
                     <!-- Employment Information Section -->
                     <div class="form-section">
                         <div class="form-section-header">
@@ -449,7 +358,16 @@
                                     <label for="foto" class="form-label-modern">
                                         <i class="mdi mdi-camera"></i>
                                         Foto Pegawai
+                                        <span class="required">*</span>
                                     </label>
+
+                                    <!-- Tempat preview foto -->
+                                    <div class="foto-preview mb-2 text-center">
+                                        <img id="preview-foto"
+                                            src="{{ old('foto') ? asset('storage/foto_pegawai/' . old('foto')) : asset('template/dist/assets/images/default.png') }}"
+                                            alt="Preview Foto"
+                                            style="max-height:150px; width:auto; border:1px solid #ccc; padding:5px;">
+                                    </div>
                                     <div class="file-upload-modern">
                                         <input type="file" name="foto" id="foto"
                                             class="file-input-modern @error('foto') error @enderror" accept="image/*">
@@ -462,8 +380,7 @@
                                     @error('foto')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
-                                    {{--
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>

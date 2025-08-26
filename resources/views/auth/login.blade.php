@@ -30,8 +30,8 @@
                 <div class="row flex-grow">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left p-5">
-                            <div class="brand-logo">
-                                <img src="{{asset('template/dist')}}/assets/images/logo.svg">
+                            <div class="brand-logo" style="display: flex; justify-content: center; align-items: center;">
+                                <img src="{{ asset('template/dist/assets/images/image.svg') }}" style="height:130px; width:auto; ">
                             </div>
                             <h4>Login ke akun anda</h4>
                             <h6 class="font-weight-light">Silakan masuk menggunakan akun yang sudah terdaftar</h6>

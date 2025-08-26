@@ -23,8 +23,6 @@ Route::get('/pegawai', function () {
 
 Route::resource('pegawai', PegawaiController::class);
 
-Route::get('/pegawai/{id}', [PegawaiController::class, 'show'])->name('pegawai.show');
-
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');

@@ -29,10 +29,6 @@
                 </div>
 
                 <div class="action-buttons">
-                    {{-- <button class="btn-filter" id="filterBtn">
-                        <i class="mdi mdi-filter-variant"></i>
-                        Filter
-                    </button> --}}
                     <a href="{{ route('pegawai.create') }}" class="btn-add-modern bg-gradient-primary">
                         <i class="mdi mdi-plus"></i>
                         Tambah Pegawai

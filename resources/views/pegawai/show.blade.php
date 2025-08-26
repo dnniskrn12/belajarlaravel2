@@ -18,7 +18,7 @@
                     <x-breadcrumbs :items="[
             ['label' => 'Dashboard', 'route' => 'home'],
             ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-            ['label' => 'Detail', 'route' => 'pegawai.show'],
+            ['label' => 'Detail', 'route' => ['pegawai.show', $pegawai->id]],
         ]" />
                 </div>
             </div>
@@ -48,6 +48,7 @@
                             {{ strtoupper(substr($pegawai->nama_pegawai, 0, 1)) }}
                         </div>
                     @endif
+
                 </div>
                 <div class="profile-info">
                     <h2 class="profile-name">{{ $pegawai->nama_pegawai }}</h2>
@@ -166,6 +167,33 @@
                     </div>
                 </div>
             </div>
+            <!-- Education Information -->
+            @if($pegawai->pend_pegawai->count() > 0)
+                <div class="detail-card full-width">
+                    <div class="detail-card-header">
+                        <div class="detail-card-icon">
+                            <i class="mdi mdi-school"></i>
+                        </div>
+                        <h3>Riwayat Pendidikan</h3>
+                    </div>
+                    <div class="detail-card-content">
+                        @foreach($pegawai->pend_pegawai as $i => $pend)
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <i class="mdi mdi-numeric-{{ $i + 1 }}-circle"></i>
+                                    Pendidikan {{ $i + 1 }}
+                                </div>
+                                <div class="detail-value">
+                                    <strong>{{ $pend->nama_pend ?? '-' }}</strong> <br>
+                                    @if($pend->thn_pend)
+                                        ({{ $pend->thn_pend }})
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <!-- Employment Information -->
             <div class="detail-card">

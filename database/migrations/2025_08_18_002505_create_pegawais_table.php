@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
-            $table->string('no_pegawai',15)->unique();
+            $table->string('no_pegawai',10)->unique();
             $table->string('nama_pegawai');
             $table->string('tempat_lahir', 35)->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->string('alamat')->nullable();
-            $table->string('agama', 15)->nullable();
+            $table->enum('agama', ['Islam', 'Kristen Protestan', 'Katholik', 'Hindu', 'Budha', 'Konghucu']);
             $table->string('no_hp', 20)->nullable();
             $table->string('email', 35);
             $table->enum('status_kwn', ['Menikah', 'Belum Menikah']);
