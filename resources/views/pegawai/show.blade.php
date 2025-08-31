@@ -1,6 +1,8 @@
+
 @extends('layouts.purple')
 
 @section('content')
+
     <div class="container-modern">
         <!-- Header Section -->
         <div class="header-section">
@@ -17,18 +19,18 @@
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
             ['label' => 'Dashboard', 'route' => 'home'],
-            ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-            ['label' => 'Detail', 'route' => ['pegawai.show', $pegawai->id]],
+            ['label' => 'Pegawai', 'route' => 'admin.pegawai.index'],
+            ['label' => 'Detail', 'route' => ['admin.pegawai.show', $pegawai->id]],
         ]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="action-buttons">
-                    <a href="{{ route('pegawai.index') }}" class="btn-filter">
+                    <a href="{{ route('admin.pegawai.index') }}" class="btn-filter">
                         <i class="mdi mdi-arrow-left"></i>
                         Kembali
                     </a>
-                    <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn-add-modern bg-gradient-primary">
+                    <a href="{{ route('admin.pegawai.edit', $pegawai->id) }}" class="btn-add-modern bg-gradient-primary">
                         <i class="mdi mdi-pencil"></i>
                         Edit Data
                     </a>

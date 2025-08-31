@@ -27,24 +27,47 @@
             </div>
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item nav-profile dropdown">
-                    <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <div class="nav-profile-img">
-                            <img src="{{asset('template/dist')}}/assets/images/faces/face1.jpg" alt="image">
-                            <span class="availability-status online"></span>
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" id="profileDropdown" href="#"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <!-- Profile Image -->
+                        <div class="nav-profile-img position-relative d-flex align-items-center justify-content-center">
+                            @php
+                                $role = auth()->user()->role->role_name;
+                                $profileImage = match ($role) {
+                                    'admin' => 'admin.png',
+                                    'superadmin' => 'superadmin.png',
+                                    'pimpinan' => 'pimpinan.png',
+                                    default => 'default.png'
+                                };
+                            @endphp
+                            <img src="{{ asset('template/dist/assets/images/faces/' . $profileImage) }}" alt="image"
+                                class="rounded-circle" style="width:45px; height:45px; object-fit:cover;">
                         </div>
-                        <div class="nav-profile-text">
-                            <p class="mb-1 text-black">{{auth()->user()->name}}</p>
+
+                        <!-- Nama -->
+                        <div class="nav-profile-text ms-3 d-flex flex-column justify-content-center">
+                            <p class="mb-0 fw-bold text-black">{{ auth()->user()->name }}</p>
                         </div>
                     </a>
-                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+
+                    <!-- Dropdown -->
+                    <div class="dropdown-menu dropdown-menu-end navbar-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
+                            <i class="mdi mdi-cached me-2 text-success"></i> Activity Log
+                        </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout me-2 text-primary"></i> Signout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 </li>
+
+
                 <li class="nav-item d-none d-lg-block full-screen-link">
                     <a class="nav-link">
                         <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>

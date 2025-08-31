@@ -102,9 +102,19 @@
                         timerProgressBar: true // optional, tampil progress bar
                     });
                 @endif
+
+                 @if(session('error'))
+                    Swal.fire({
+                        title: "Error!",
+                        text: "{{ session('error') }}",
+                        icon: "error",
+                        showConfirmButton: true, // tombol OK tetap muncul untuk error
+                    });
+                @endif
+
         });
         </script>
-
+@stack('script')
 </body>
 
 </html>

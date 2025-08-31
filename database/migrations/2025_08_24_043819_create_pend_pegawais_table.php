@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('no_pegawai'); // harus string sesuai pegawai.no_pegawai
             $table->unsignedBigInteger('id_jjg'); // relasi ke jenjang
             $table->string('nama_pend', 100); // contoh: Universitas Andalas
-            $table->year('thn_pend'); // tahun lulus
+            $table->string('thn_pend',10); // tahun lulus
             $table->timestamps();
 
             $table->foreign('no_pegawai')->references('no_pegawai')->on('pegawai')->onDelete('cascade');

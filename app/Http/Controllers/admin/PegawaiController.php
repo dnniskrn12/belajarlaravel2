@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Pegawai;
@@ -63,7 +64,7 @@ class PegawaiController extends Controller
             }
         }
 
-        return redirect()->route('pegawai.index')
+        return redirect()->route('admin.pegawai.index')
             ->with('success', 'Data pegawai berhasil ditambahkan');
     }
 
@@ -118,7 +119,7 @@ class PegawaiController extends Controller
             }
         }
 
-        return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui!');
+        return redirect()->route('admin.pegawai.index')->with('success', 'Data pegawai berhasil diperbarui!');
     }
 
 
@@ -134,6 +135,6 @@ class PegawaiController extends Controller
 
         $pegawai->delete();
 
-        return redirect()->route('pegawai.index')->with('success', 'Data Pegawai berhasil dihapus');
+        return redirect()->route('admin.pegawai.index')->with('success', 'Data Pegawai berhasil dihapus');
     }
 }

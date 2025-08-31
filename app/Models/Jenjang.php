@@ -13,9 +13,15 @@ class Jenjang extends Model
     protected $primaryKey = 'id_jjg';
     protected $fillable = ['nama_jenjang'];
 
-    public function pendidikans()
+    public function pend_pegawai()
     {
         return $this->hasMany(Pend_Pegawai::class, 'id_jjg');
     }
+
+    public function pend_magang()
+    {
+        return $this->hasMany(Pend_Magang::class, 'id_jjg');
+    }
+
 }
 

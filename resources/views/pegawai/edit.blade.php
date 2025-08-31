@@ -17,13 +17,13 @@
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
             ['label' => 'Dashboard', 'route' => 'home'],
-            ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-            ['label' => 'Edit', 'route' => 'pegawai.edit'],
+            ['label' => 'Pegawai', 'route' => 'admin.pegawai.index'],
+            ['label' => 'Edit', 'route' => 'admin.pegawai.edit'],
         ]" />
                 </div>
             </div>
             <div class="action-bar">
-                <a href="{{ route('pegawai.index') }}" class="btn-filter">
+                <a href="{{ route('admin.pegawai.index') }}" class="btn-filter">
                     <i class="mdi mdi-arrow-left"></i> Kembali
                 </a>
             </div>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="form-container-modern">
-                <form action="{{ route('pegawai.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route('admin.pegawai.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data"
                     novalidate>
                     @csrf
                     @method('PUT')
@@ -121,17 +121,28 @@
                                 </div>
 
                                 <div class="form-group-modern">
-                                    <label for="agama" class="form-label-modern">
-                                        <i class="mdi mdi-book-open-variant"></i> Agama
-                                        <span class="required">*</span>
-                                    </label>
-                                    <input type="text" name="agama" id="agama"
-                                        class="form-input-modern @error('agama') error @enderror"
-                                        value="{{ old('agama', $pegawai->agama) }}" required>
-                                    @error('agama')
-                                        <span class="form-error">{{ $message }}</span>
-                                    @enderror
-                                </div>
+    <label for="agama" class="form-label-modern">
+        <i class="mdi mdi-book-open-variant"></i>
+        Agama
+        <span class="required">*</span>
+    </label>
+    <select name="agama" id="agama"
+        class="form-input-modern @error('agama') error @enderror" required>
+        <option value="">-- Pilih Agama --</option>
+        <option value="Islam" @selected(old('agama', $pegawai->agama ?? '') == 'Islam')>Islam</option>
+        <option value="Kristen Protestan" @selected(old('agama', $pegawai->agama ?? '') == 'Kristen Protestan')>Kristen Protestan</option>
+        <option value="Katholik" @selected(old('agama', $pegawai->agama ?? '') == 'Katholik')>Katholik</option>
+        <option value="Hindu" @selected(old('agama', $pegawai->agama ?? '') == 'Hindu')>Hindu</option>
+        <option value="Budha" @selected(old('agama', $pegawai->agama ?? '') == 'Budha')>Budha</option>
+        <option value="Konghucu" @selected(old('agama', $pegawai->agama ?? '') == 'Konghucu')>Konghucu</option>
+    </select>
+    @error('agama')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
+
+
+
                             </div>
 
                             <div class="form-group-modern full-width">
@@ -334,7 +345,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <a href="{{ route('pegawai.index') }}" class="btn-cancel">
+                        <a href="{{ route('admin.pegawai.index') }}" class="btn-cancel">
                             <i class="mdi mdi-close"></i>
                             Batal
                         </a>

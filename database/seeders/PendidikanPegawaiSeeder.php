@@ -13,19 +13,40 @@ class PendidikanPegawaiSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // Ambil semua pegawai
+        $kategoriWajib = [
+            'sd_mi' => [1, 2],        // SD atau MI, ambil 1 random
+            'smp_mts' => [3, 4],      // SMP atau MTS, ambil 1 random
+            'sma_ma_smk' => [5, 6, 7] // SMA/MA/SMK, ambil 1 random
+        ];
+
+        $jenjangOpsional = [8, 9, 10, 11, 12, 13]; // S1, S2, S3, D1, D3, D4
+
         $pegawaiList = Pegawai::all();
 
         foreach ($pegawaiList as $pegawai) {
-            // Tentukan jumlah pendidikan tiap pegawai (1-3)
-            $jumlahPendidikan = rand(1, 6);
 
-            for ($i = 0; $i < $jumlahPendidikan; $i++) {
+            // Masukkan jenjang wajib: satu random dari tiap kategori
+            foreach ($kategoriWajib as $kategori) {
+                $id_jjg = $faker->randomElement($kategori);
+
                 Pend_Pegawai::create([
-                    'id_pegawai' => $pegawai->id,
-                    'id_jjg' => rand(1, 6), // Sesuaikan dengan id_jenjang yang ada
-                    'nama_pend' => $faker->company . ' School', // Bisa diganti sesuai kebutuhan
-                    'thn_pend' => $faker->numberBetween(2000, 2023),
+                    'no_pegawai' => $pegawai->no_pegawai,
+                    'id_jjg' => $id_jjg,
+                    'nama_pend' => $faker->company . ' School',
+                    'thn_pend' => $faker->numberBetween(1990, 2015),
+                ]);
+            }
+
+            // Masukkan jenjang opsional (0 hingga semua)
+            $jumlahOpsional = rand(0, count($jenjangOpsional));
+            $opsionalTerpilih = $faker->randomElements($jenjangOpsional, $jumlahOpsional);
+
+            foreach ($opsionalTerpilih as $id_jjg) {
+                Pend_Pegawai::create([
+                    'no_pegawai' => $pegawai->no_pegawai,
+                    'id_jjg' => $id_jjg,
+                    'nama_pend' => $faker->company . ' University',
+                    'thn_pend' => $faker->numberBetween(2010, 2023),
                 ]);
             }
         }

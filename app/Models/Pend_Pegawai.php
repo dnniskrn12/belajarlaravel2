@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pend_Pegawai extends Model
 {
     use HasFactory;
-    protected $table = 'pend_pegawai';
+protected $table = 'pend_pegawai';
     protected $primaryKey = 'id_pend_pgw';
     protected $fillable = ['no_pegawai', 'id_jjg', 'nama_pend', 'thn_pend'];
 

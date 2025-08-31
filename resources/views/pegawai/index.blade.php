@@ -16,10 +16,7 @@
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
-                    <x-breadcrumbs :items="[
-                        ['label' => 'Dashboard', 'route' => 'home'],
-                        ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-                    ]" />
+                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'admin.dashboard'], ['label' => 'Pegawai', 'route' => 'admin.pegawai.index'],]" />
                 </div>
             </div>
             <div class="action-bar">
@@ -29,7 +26,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="{{ route('pegawai.create') }}" class="btn-add-modern bg-gradient-primary">
+                    <a href="{{ route('admin.pegawai.create') }}" class="btn-add-modern bg-gradient-primary">
                         <i class="mdi mdi-plus"></i>
                         Tambah Pegawai
                     </a>
@@ -43,9 +40,9 @@
                 <span class="filter-chip" data-filter="non aktif">Tidak Aktif</span>
             </div>
 
+
+
         </div>
-
-
 
         <!-- Stats Cards -->
         <div class="stats-grid">
@@ -68,7 +65,7 @@
                         <p class="number">{{ $pegawai->where('status_pekerjaan', 'Aktif')->count() }}</p>
                     </div>
                     <div class="stat-icon">
-                        <div style="width: 12px; height: 12px; background: white; border-radius: 50%;"></div>
+                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                     </div>
                 </div>
             </div>
@@ -80,12 +77,34 @@
                         <p class="number">{{ $pegawai->where('status_pekerjaan', '!=', 'Aktif')->count() }}</p>
                     </div>
                     <div class="stat-icon">
-                        <div style="width: 12px; height: 12px; background: white; border-radius: 50%;"></div>
+                        <i class="mdi mdi-close-octagon-outline"></i>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Added pagination controls -->
+        <div class="pagination-controls"
+            style="display: flex; align-items: center; gap: 16px; margin-top: 16px; justify-content: space-between; margin-top: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #6b7280; font-size: 14px;">Tampilkan:</span>
+                <select id="entriesPerPage" class="form-select"
+                    style="width: auto; min-width: 80px; padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;">
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span style="color: #6b7280; font-size: 14px;">data</span>
+            </div>
+
+            <div class="pagination-info" style="color: #6b7280; font-size: 14px;">
+                Menampilkan <span id="showingStart">1</span> sampai <span id="showingEnd">10</span> dari <span
+                    id="totalEntries">{{ count($pegawai) }}</span> data
+            </div>
+        </div>
         <!-- Employee Table -->
         <div class="data-card">
             <div class="card-header-clean">
@@ -109,7 +128,7 @@
                         @foreach ($pegawai as $index => $item)
                             <tr class="employee-row" data-status="{{ strtolower($item->status_pekerjaan) }}"
                                 data-search="{{ strtolower($item->nama_pegawai . ' ' . $item->no_pegawai . ' ' . $item->email) }}">
-                                <td>{{ $index + 1 }}</td>
+                                <td class="row-number">{{ $index + 1 }}</td>
                                 <td>
                                     <div class="employee-info">
                                         <div class="employee-avatar">
@@ -163,17 +182,17 @@
                                             <i class="mdi mdi-eye"></i>
                                         </button>
 
-                                        <a href="{{route('pegawai.show', $item->id)}}" class="action-btn-table view"
+                                        <a href="{{route('admin.pegawai.show', $item->id)}}" class="action-btn-table view"
                                             title="Detail">
                                             <i class="mdi mdi-account-details"></i>
                                         </a>
 
-                                        <a href="{{ route('pegawai.edit', $item->id) }}" class="action-btn-table edit"
+                                        <a href="{{ route('admin.pegawai.edit', $item->id) }}" class="action-btn-table edit"
                                             title="Edit">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
 
-                                        <form action="{{ route('pegawai.destroy', $item->id) }}" method="POST"
+                                        <form action="{{ route('admin.pegawai.destroy', $item->id) }}" method="POST"
                                             class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -187,6 +206,25 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Added pagination navigation -->
+            <div class="pagination-nav"
+                style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; padding: 16px 0;">
+                <button id="prevPage" class="pagination-btn"
+                    style="padding: 8px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px;"
+                    disabled>
+                    <i class="mdi mdi-chevron-left"></i>
+                    Sebelumnya
+                </button>
+
+                <div id="pageNumbers" class="page-numbers" style="display: flex; gap: 4px;"></div>
+
+                <button id="nextPage" class="pagination-btn"
+                    style="padding: 8px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                    Selanjutnya
+                    <i class="mdi mdi-chevron-right"></i>
+                </button>
             </div>
 
             <!-- Empty State -->
@@ -227,9 +265,12 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         $(document).ready(function () {
+            let currentPage = 1;
+            let entriesPerPage = 10;
+            let filteredRows = [];
+
             // Search functionality
             $('#searchInput').on('input', function () {
                 filterEmployees();
@@ -239,13 +280,35 @@
             $('.filter-chip').on('click', function () {
                 $('.filter-chip').removeClass('active');
                 $(this).addClass('active');
+                currentPage = 1; // Reset to first page when filtering
                 filterEmployees();
+            });
+
+            $('#entriesPerPage').on('change', function () {
+                entriesPerPage = parseInt($(this).val());
+                currentPage = 1; // Reset to first page
+                filterEmployees();
+            });
+
+            $('#prevPage').on('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPage();
+                }
+            });
+
+            $('#nextPage').on('click', function () {
+                const totalPages = Math.ceil(filteredRows.length / entriesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPage();
+                }
             });
 
             function filterEmployees() {
                 const searchTerm = $('#searchInput').val().toLowerCase();
                 const activeFilter = $('.filter-chip.active').data('filter');
-                let visibleCount = 0;
+                filteredRows = [];
 
                 $('.employee-row').each(function () {
                     const $row = $(this);
@@ -256,16 +319,100 @@
                     let matchesFilter = activeFilter === 'all' || status === activeFilter;
 
                     if (matchesSearch && matchesFilter) {
-                        $row.show();
-                        visibleCount++;
-                    } else {
-                        $row.hide();
+                        filteredRows.push($row);
                     }
                 });
 
-                // Update count and show/hide empty state
-                $('#employeeCount').text(visibleCount + ' pegawai');
-                $('#emptyState').toggle(visibleCount === 0);
+                displayPage();
+            }
+
+            function displayPage() {
+                // Hide all rows first
+                $('.employee-row').hide();
+
+                // Calculate start and end indices
+                const startIndex = (currentPage - 1) * entriesPerPage;
+                const endIndex = Math.min(startIndex + entriesPerPage, filteredRows.length);
+
+                // Show rows for current page and update row numbers
+                for (let i = startIndex; i < endIndex; i++) {
+                    const $row = filteredRows[i];
+                    $row.show();
+                    $row.find('.row-number').text(i + 1);
+                }
+
+                // Update pagination info
+                updatePaginationInfo();
+                updatePaginationButtons();
+
+                // Show/hide empty state
+                $('#emptyState').toggle(filteredRows.length === 0);
+            }
+
+            function updatePaginationInfo() {
+                const startIndex = filteredRows.length === 0 ? 0 : (currentPage - 1) * entriesPerPage + 1;
+                const endIndex = Math.min(currentPage * entriesPerPage, filteredRows.length);
+
+                $('#showingStart').text(startIndex);
+                $('#showingEnd').text(endIndex);
+                $('#totalEntries').text(filteredRows.length);
+                $('#employeeCount').text(filteredRows.length + ' pegawai');
+            }
+
+            function updatePaginationButtons() {
+                const totalPages = Math.ceil(filteredRows.length / entriesPerPage);
+
+                // Update prev/next buttons
+                $('#prevPage').prop('disabled', currentPage === 1);
+                $('#nextPage').prop('disabled', currentPage === totalPages || totalPages === 0);
+
+                // Generate page numbers
+                const $pageNumbers = $('#pageNumbers');
+                $pageNumbers.empty();
+
+                if (totalPages <= 7) {
+                    // Show all pages if 7 or fewer
+                    for (let i = 1; i <= totalPages; i++) {
+                        $pageNumbers.append(createPageButton(i));
+                    }
+                } else {
+                    // Show first page
+                    $pageNumbers.append(createPageButton(1));
+
+                    if (currentPage > 4) {
+                        $pageNumbers.append('<span style="padding: 8px 4px;">...</span>');
+                    }
+
+                    // Show pages around current page
+                    const start = Math.max(2, currentPage - 1);
+                    const end = Math.min(totalPages - 1, currentPage + 1);
+
+                    for (let i = start; i <= end; i++) {
+                        $pageNumbers.append(createPageButton(i));
+                    }
+
+                    if (currentPage < totalPages - 3) {
+                        $pageNumbers.append('<span style="padding: 8px 4px;">...</span>');
+                    }
+
+                    // Show last page
+                    if (totalPages > 1) {
+                        $pageNumbers.append(createPageButton(totalPages));
+                    }
+                }
+            }
+
+            function createPageButton(pageNum) {
+                const isActive = pageNum === currentPage;
+                const buttonStyle = isActive
+                    ? 'padding: 8px 12px; border: 1px solid #d58df7; background: #d58df7; color: white; border-radius: 6px; cursor: pointer; min-width: 40px; text-align: center;'
+                    : 'padding: 8px 12px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 6px; cursor: pointer; min-width: 40px; text-align: center;';
+
+                return $(`<button class="page-btn" data-page="${pageNum}" style="${buttonStyle}">${pageNum}</button>`)
+                    .on('click', function () {
+                        currentPage = pageNum;
+                        displayPage();
+                    });
             }
 
             // Delete confirmation
@@ -289,12 +436,8 @@
                 });
             });
 
-            // Initialize filter count
             filterEmployees();
         });
     </script>
-
 @endsection
-@push('scripts')
 
-@endpush

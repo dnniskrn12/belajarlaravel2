@@ -16,15 +16,15 @@
                 </div>
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
-                        ['label' => 'Dashboard', 'route' => 'home'],
-                        ['label' => 'Pegawai', 'route' => 'pegawai.index'],
-                        ['label' => 'Tambah', 'route' => 'pegawai.create'],
+                        ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
+                        ['label' => 'Pegawai', 'route' => 'admin.pegawai.index'],
+                        ['label' => 'Tambah', 'route' => 'admin.pegawai.create'],
                     ]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="action-buttons">
-                    <a href="{{ route('pegawai.index') }}" class="btn-filter">
+                    <a href="{{ route('admin.pegawai.index') }}" class="btn-filter">
                         <i class="mdi mdi-arrow-left"></i>
                         Kembali
                     </a>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-container-modern">
-                <form action="{{ route('pegawai.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <form action="{{ route('admin.pegawai.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                     @csrf
 
                     <!-- Personal Information Section -->
@@ -387,7 +387,7 @@
 
                     <!-- Action Buttons -->
                     <div class="form-actions">
-                        <a href="{{ route('pegawai.index') }}" class="btn-cancel">
+                        <a href="{{ route('admin.pegawai.index') }}" class="btn-cancel">
                             <i class="mdi mdi-close"></i>
                             Batal
                         </a>
