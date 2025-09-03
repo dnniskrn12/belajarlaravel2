@@ -48,7 +48,7 @@
                     <x-sidebar.links title='Dashboard' icon='mdi mdi-home menu-icon' route='admin.dashboard' />
                     <x-sidebar.dropdown id="pegawai-dropdown" title="Pegawai" icon="mdi mdi-account-group" :items="[
                     ['label' => 'Data Pegawai', 'url' => route('admin.pegawai.index')],
-                    ['label' => 'Daftar SK Kerja', 'url' => url('pages/ui-features/dropdowns.html')],
+                    ['label' => 'Daftar SK Kerja', 'url' => route('admin.skkerja.index')],
                 ]" />
                     <x-sidebar.dropdown id="magang-dropdown" title="Magang" icon="mdi mdi-account-school" :items="[
                     ['label' => 'Data Magang', 'url' => route('admin.magang.index')],
