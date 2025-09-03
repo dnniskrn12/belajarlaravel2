@@ -148,18 +148,18 @@
                     @csrf
                     <div class="modal-body" style="padding: 32px;">
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="id_jabatan" class="form-label"
+                            <label for="id_jabatan" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Jabatan
                             </label>
-                            <input type="text" class="form-control" id="id_jabatan" name="id_jabatan"
+                            <input type="text" class="form-control" id="id_jabatan" name="id_jabatan" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;"
                                 placeholder="Masukkan ID jabatan (contoh: JBT001)" required>
                             <small class="form-text text-muted">ID unik untuk jabatan</small>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <label for="nama_jabatan" class="form-label"
+                            <label for="nama_jabatan" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-briefcase me-2"></i>Nama Jabatan
                             </label>
@@ -205,7 +205,7 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Jabatan
                             </label>
-                            <input type="text" class="form-control" id="edit_id_jabatan" name="id_jabatan"
+                            <input type="text" class="form-control" id="edit_id_jabatan" name="id_jabatan" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                             <small class="form-text text-muted">ID unik untuk jabatan</small>
                         </div>

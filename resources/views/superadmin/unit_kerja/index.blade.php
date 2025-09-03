@@ -138,18 +138,18 @@
                     @csrf
                     <div class="modal-body" style="padding: 32px;">
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="id_unitkerja" class="form-label"
+                            <label for="id_unitkerja" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Unit Kerja
                             </label>
-                            <input type="text" class="form-control" id="id_unitkerja" name="id_unitkerja"
+                            <input type="text" class="form-control" id="id_unitkerja" name="id_unitkerja" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;"
                                 placeholder="Masukkan ID unit kerja (contoh: UKJ001)" required>
                             <small class="form-text text-muted">Gunakan kode unik untuk unit kerja</small>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <label for="nama_unitkerja" class="form-label"
+                            <label for="nama_unitkerja" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-office-building me-2"></i>Nama Unit Kerja
                             </label>
@@ -190,7 +190,7 @@
                     @method('PUT')
                     <div class="modal-body" style="padding: 32px;">
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="edit_id_unitkerja" class="form-label"
+                            <label for="edit_id_unitkerja" class="form-label"autocomplete="off"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Unit Kerja
                             </label>

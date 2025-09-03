@@ -250,7 +250,7 @@
                             style="filter: brightness(0) invert(1);"></button>
                     </div>
                     <div class="modal-body text-center" style="padding: 32px;">
-                        <img src="{{ asset('storage/foto_magang/' . $item->foto) }}" alt="Foto {{ $item->nama_siswa }}"
+                        <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto {{ $item->nama_siswa }}"
                             class="img-fluid"
                             style="max-width: 300px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
                         <div style="margin-top: 16px;">

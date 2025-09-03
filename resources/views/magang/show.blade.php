@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <h1 class="page-title-modern" style="margin:0;">Detail Magang</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Informasi lengkap {{ $magang->nama_magang }}</p>
+                        <p class="page-subtitle-modern" style="margin:0;">Informasi lengkap {{ $magang->nama_siswa }}</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
@@ -43,24 +43,24 @@
             <div class="profile-header">
                 <div class="profile-avatar">
                     @if($magang->foto)
-                        <img src="{{ asset('storage/foto_magang/' . $magang->foto) }}"
-                            alt="Foto {{ $magang->nama_magang }}">
+                        <img src="{{ asset('storage/' . $magang->foto) }}"
+                            alt="Foto {{ $magang->nama_siswa }}">
                     @else
                         <div class="avatar-placeholder">
-                            {{ strtoupper(substr($magang->nama_magang, 0, 1)) }}
+                            {{ strtoupper(substr($magang->nama_siswa, 0, 1)) }}
                         </div>
                     @endif
 
                 </div>
                 <div class="profile-info">
-                    <h2 class="profile-name">{{ $magang->nama_magang }}</h2>
+                    <h2 class="profile-name">{{ $magang->nama_siswa }}</h2>
                     <p class="profile-id">{{ $magang->no_magang }}</p>
                     <div class="profile-status">
                         <span
-                            class="status-badge {{ $magang->status_pekerjaan == 'Aktif' ? 'status-active' : 'status-inactive' }}">
+                            class="status-badge {{ $magang->status_magang == 'Aktif' ? 'status-active' : 'status-inactive' }}">
                             <i
-                                class="mdi {{ $magang->status_pekerjaan == 'Aktif' ? 'mdi-check-circle' : 'mdi-close-circle' }}"></i>
-                            {{ $magang->status_pekerjaan }}
+                                class="mdi {{ $magang->status_magang == 'Aktif' ? 'mdi-check-circle' : 'mdi-close-circle' }}"></i>
+                            {{ $magang->status_magang }}
                         </span>
                     </div>
                 </div>
@@ -203,23 +203,9 @@
                     <div class="detail-card-icon">
                         <i class="mdi mdi-briefcase"></i>
                     </div>
-                    <h3>Informasi Pekerjaan</h3>
+                    <h3>Informasi Magang</h3>
                 </div>
                 <div class="detail-card-content">
-                    <div class="detail-row">
-                        <div class="detail-label">
-                            <i class="mdi mdi-heart"></i>
-                            Status Perkawinan
-                        </div>
-                        <div class="detail-value">
-                            <span
-                                class="marriage-badge {{ strtolower(str_replace(' ', '-', $magang->status_kwn ?? '')) }}">
-                                <i
-                                    class="mdi {{ $magang->status_kwn == 'Menikah' ? 'mdi-heart' : 'mdi-heart-outline' }}"></i>
-                                {{ $magang->status_kwn ?? '-' }}
-                            </span>
-                        </div>
-                    </div>
                     <div class="detail-row">
                         <div class="detail-label">
                             <i class="mdi mdi-calendar-check"></i>
@@ -240,7 +226,7 @@
                         </div>
                     </div>
 
-                    {{-- 🔹 Lama Bekerja --}}
+                    {{-- 🔹 Lama Magang --}}
                     @if($magang->tgl_masuk)
                         @php
                             $start = \Carbon\Carbon::parse($magang->tgl_masuk);
@@ -250,7 +236,7 @@
                         <div class="detail-row">
                             <div class="detail-label">
                                 <i class="mdi mdi-timer"></i>
-                                Lama Bekerja
+                                Lama Magang
                             </div>
                             <div class="detail-value">
                                 {{ $diff->y }} tahun {{ $diff->m }} bulan {{ $diff->d }} hari
@@ -261,14 +247,14 @@
                     <div class="detail-row">
                         <div class="detail-label">
                             <i class="mdi mdi-account-check"></i>
-                            Status Pekerjaan
+                            Status Magang
                         </div>
                         <div class="detail-value">
                             <span
-                                class="status-badge {{ $magang->status_pekerjaan == 'Aktif' ? 'status-active' : 'status-inactive' }}">
+                                class="status-badge {{ $magang->status_magang == 'Aktif' ? 'status-active' : 'status-inactive' }}">
                                 <i
-                                    class="mdi {{ $magang->status_pekerjaan == 'Aktif' ? 'mdi-check-circle' : 'mdi-close-circle' }}"></i>
-                                {{ $magang->status_pekerjaan }}
+                                    class="mdi {{ $magang->status_magang == 'Aktif' ? 'mdi-check-circle' : 'mdi-close-circle' }}"></i>
+                                {{ $magang->status_magang }}
                             </span>
                         </div>
                     </div>
@@ -286,8 +272,8 @@
                     </div>
                     <div class="detail-card-content">
                         <div class="photo-container">
-                            <img src="{{ asset('storage/foto_magang/' . $magang->foto) }}"
-                                alt="Foto {{ $magang->nama_magang }}">
+                            <img src="{{ asset('storage/' . $magang->foto) }}"
+                                alt="Foto {{ $magang->nama_siswa }}">
                             <div class="photo-overlay">
                                 <button class="photo-zoom-btn" data-bs-toggle="modal" data-bs-target="#photoModal">
                                     <i class="mdi mdi-magnify-plus"></i>
@@ -309,15 +295,15 @@
                     <div class="modal-header">
                         <h5 class="modal-title">
                             <i class="mdi mdi-account-circle me-2"></i>
-                            {{ $magang->nama_magang }}
+                            {{ $magang->nama_siswa }}
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <img src="{{ asset('storage/foto_magang/' . $magang->foto) }}" alt="Foto {{ $magang->nama_magang }}"
+                        <img src="{{ asset('storage/' . $magang->foto) }}" alt="Foto {{ $magang->nama_siswa }}"
                             class="modal-photo">
                         <div class="modal-photo-info">
-                            <h6>{{ $magang->nama_magang }}</h6>
+                            <h6>{{ $magang->nama_siswa }}</h6>
                             <small>{{ $magang->no_magang }}</small>
                         </div>
                     </div>

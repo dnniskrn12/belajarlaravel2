@@ -67,15 +67,15 @@
                                 </div>
 
                                 <div class="form-group-modern">
-                                    <label for="nama_magang" class="form-label-modern">
+                                    <label for="nama_siswa" class="form-label-modern">
                                         <i class="mdi mdi-account-outline"></i>
                                         Nama Lengkap
                                         <span class="required">*</span>
                                     </label>
-                                    <input type="text" name="nama_magang" id="nama_magang"
-                                        class="form-input-modern @error('nama_magang') error @enderror"
-                                        value="{{ old('nama_magang') }}" placeholder="Masukkan nama lengkap" required>
-                                    @error('nama_magang')
+                                    <input type="text" name="nama_siswa" id="nama_siswa"
+                                        class="form-input-modern @error('nama_siswa') error @enderror"
+                                        value="{{ old('nama_siswa') }}" placeholder="Masukkan nama lengkap" required>
+                                    @error('nama_siswa')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -345,7 +345,7 @@
                                     <!-- Tempat preview foto -->
                                     <div class="foto-preview mb-2 text-center">
                                         <img id="preview-foto"
-                                            src="{{ old('foto') ? asset('storage/foto_magang/' . old('foto')) : asset('template/dist/assets/images/default.png') }}"
+                                            src="{{ old('foto') ? asset('storage/' . old('foto')) : asset('template/dist/assets/images/default.png') }}"
                                             alt="Preview Foto"
                                             style="max-height:150px; width:auto; border:1px solid #ccc; padding:5px;">
                                     </div>

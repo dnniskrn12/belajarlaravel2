@@ -135,27 +135,27 @@
                     <div class="modal-body" style="padding: 32px;">
 
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="id_lokasi" class="form-label"
+                            <label for="id_lokasi" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Lokasi
                             </label>
-                            <input type="text" class="form-control" id="id_lokasi" name="id_lokasi"
+                            <input type="text" class="form-control" id="id_lokasi" name="id_lokasi" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                             <small class="form-text text-muted">Gunakan kode unik untuk lokasi</small>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="nama_lokasi" class="form-label"
+                            <label for="nama_lokasi" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-map-marker me-2"></i>Nama Lokasi
                             </label>
-                            <input type="text" class="form-control" id="nama_lokasi" name="nama_lokasi"
+                            <input type="text" class="form-control" id="nama_lokasi" name="nama_lokasi" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                             <small class="form-text text-muted">Nama lokasi lengkap</small>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="alamat" class="form-label"
+                            <label for="alamat" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-home-map-marker me-2"></i>Alamat
                             </label>
@@ -166,11 +166,11 @@
                         </div>
 
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <label for="no_hp" class="form-label"
+                            <label for="no_hp" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-phone me-2"></i>No. HP
                             </label>
-                            <input type="text" class="form-control" id="no_hp" name="no_hp"
+                            <input type="text" class="form-control" id="no_hp" name="no_hp" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                             <small class="form-text text-muted">Nomor HP yang bisa dihubungi</small>
                         </div>
@@ -210,7 +210,7 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Lokasi
                             </label>
-                            <input type="text" class="form-control" id="edit_id_lokasi" name="id_lokasi"
+                            <input type="text" class="form-control" id="edit_id_lokasi" name="id_lokasi" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                         </div>
 
@@ -219,7 +219,7 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-map-marker me-2"></i>Nama Lokasi
                             </label>
-                            <input type="text" class="form-control" id="edit_nama_lokasi" name="nama_lokasi"
+                            <input type="text" class="form-control" id="edit_nama_lokasi" name="nama_lokasi" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                         </div>
 
@@ -238,7 +238,7 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-phone me-2"></i>No. HP
                             </label>
-                            <input type="text" class="form-control" id="edit_no_hp" name="no_hp"
+                            <input type="text" class="form-control" id="edit_no_hp" name="no_hp" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                         </div>
 

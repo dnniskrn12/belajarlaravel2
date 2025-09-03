@@ -11,7 +11,7 @@
                     </div>
                     <div>
                         <h1 class="page-title-modern mb-0">Edit Magang</h1>
-                        <p class="page-subtitle-modern mb-0">Ubah data magang {{ $magang->nama_magang }}</p>
+                        <p class="page-subtitle-modern mb-0">Ubah data magang {{ $magang->nama_siswa }}</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
@@ -64,15 +64,15 @@
                                 </div>
 
                                 <div class="form-group-modern">
-                                    <label for="nama_magang" class="form-label-modern">
+                                    <label for="nama_siswa" class="form-label-modern">
                                         <i class="mdi mdi-account-outline"></i> Nama Lengkap
                                         <span class="required">*</span>
                                     </label>
-                                    <input type="text" name="nama_magang" id="nama_magang"
-                                        class="form-input-modern @error('nama_magang') error @enderror"
-                                        value="{{ old('nama_magang', $magang->nama_magang) }}"
+                                    <input type="text" name="nama_siswa" id="nama_siswa"
+                                        class="form-input-modern @error('nama_siswa') error @enderror"
+                                        value="{{ old('nama_siswa', $magang->nama_siswa) }}"
                                         placeholder="Masukkan nama lengkap" required>
-                                    @error('nama_magang')
+                                    @error('nama_siswa')
                                         <span class="form-error">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -313,7 +313,7 @@
                                         <i class="mdi mdi-camera"></i> Foto Magang <span class="required">*</span>
                                     </label>
                                     <div class="foto-preview mb-2 text-center">
-                                        <img id="preview-foto" src="{{ $magang->foto ? asset('storage/foto_magang/' . $magang->foto)
+                                        <img id="preview-foto" src="{{ $magang->foto ? asset('storage/' . $magang->foto)
         : asset('template/dist/assets/images/default.png') }}" alt="Preview Foto"
                                             style="max-height:150px; width:auto; border:1px solid #ccc; padding:5px;">
                                     </div>

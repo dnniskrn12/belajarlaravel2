@@ -139,18 +139,18 @@
                     @csrf
                     <div class="modal-body" style="padding: 32px;">
                         <div class="form-group" style="margin-bottom: 24px;">
-                            <label for="id_unitmagang" class="form-label"
+                            <label for="id_unitmagang" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Unit Magang
                             </label>
-                            <input type="text" class="form-control" id="id_unitmagang" name="id_unitmagang"
-                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;"
+                            <input type="text" class="form-control" id="id_unitmagang" name="id_unitmagang" class="form-input-modern"
+                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" autocomplete="off"
                                 placeholder="Masukkan ID unit magang (contoh: MAG001)" required>
                             <small class="form-text text-muted">Gunakan kode unik untuk unit magang</small>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <label for="nama_unitmagang" class="form-label"
+                            <label for="nama_unitmagang" class="form-label-modern"
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-school me-2"></i>Nama Unit Magang
                             </label>
@@ -195,7 +195,7 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-identifier me-2"></i>ID Unit Magang
                             </label>
-                            <input type="text" class="form-control" id="edit_id_unitmagang" name="id_unitmagang"
+                            <input type="text" class="form-control" id="edit_id_unitmagang" name="id_unitmagang" autocomplete="off"
                                 style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
                             <small class="form-text text-muted">Gunakan kode unik untuk unit magang</small>
                         </div>
