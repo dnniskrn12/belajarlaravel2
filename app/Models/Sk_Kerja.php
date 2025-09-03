@@ -4,9 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Unit_Kerja;
-use App\Models\Lokasi;
-use App\Models\Jabatan;
 
 class Sk_Kerja extends Model
 {
@@ -17,25 +14,34 @@ class Sk_Kerja extends Model
     protected $fillable = [
         'no_sk',
         'no_pegawai',
-        'nama_pegawai',
+        'nama_pegawai', // kalau masih dipakai
         'tgl_sk',
-        'id_lokasi',
+        'id_jabatan',
         'id_unitkerja',
-        'id_jabatan'
+        'id_lokasi',
     ];
 
-    public function lokasi()
+    // Relasi ke Pegawai
+    public function pegawai()
     {
-        return $this->belongsTo(Lokasi::class, 'id_lokasi');
+        return $this->belongsTo(Pegawai::class, 'no_pegawai', 'no_pegawai');
     }
 
-    public function unitkerja()
-    {
-        return $this->belongsTo(Unit_Kerja::class, 'id_unitkerja');
-    }
-
+    // Relasi ke Jabatan
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id');
+    }
+
+    // Relasi ke Unit Kerja
+    public function unitkerja()
+    {
+        return $this->belongsTo(Unit_Kerja::class, 'id_unitkerja', 'id');
+    }
+
+    // Relasi ke Lokasi
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class, 'id_lokasi', 'id');
     }
 }

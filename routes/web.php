@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Superadmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Pimpinan\DashboardController as PimpinanDashboardController;
 use App\Http\Controllers\Admin\PegawaiController;
+use App\Http\Controllers\Admin\SkKerjaController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\Superadmin\JabatanController;
@@ -40,6 +41,7 @@ Route::get('/', function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('pegawai', PegawaiController::class);
+    Route::resource('skkerja', SkKerjaController::class);
     Route::resource('magang', MagangController::class);
 });
 Route::prefix('superadmin')->name('superadmin.')->middleware(['auth'])->group(function () {

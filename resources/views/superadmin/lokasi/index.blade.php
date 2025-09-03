@@ -170,8 +170,9 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-phone me-2"></i>No. HP
                             </label>
-                            <input type="text" class="form-control" id="no_hp" name="no_hp" autocomplete="off"
-                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
+                            <input type="number" class="form-control" id="no_hp" name="no_hp" autocomplete="off"
+                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required
+                               >
                             <small class="form-text text-muted">Nomor HP yang bisa dihubungi</small>
                         </div>
 
@@ -219,8 +220,9 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-map-marker me-2"></i>Nama Lokasi
                             </label>
-                            <input type="text" class="form-control" id="edit_nama_lokasi" name="nama_lokasi" autocomplete="off"
-                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
+                            <input type="text" class="form-control" id="edit_nama_lokasi" name="nama_lokasi"
+                                autocomplete="off" style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;"
+                                required>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 24px;">
@@ -238,8 +240,9 @@
                                 style="font-weight: 600; margin-bottom: 8px; color: #374151;">
                                 <i class="mdi mdi-phone me-2"></i>No. HP
                             </label>
-                            <input type="text" class="form-control" id="edit_no_hp" name="no_hp" autocomplete="off"
-                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required>
+                            <input type="number" class="form-control" id="edit_no_hp" name="no_hp" autocomplete="off"
+                                style="border-radius: 8px; border: 1px solid #d1d5db; padding: 12px;" required
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
 
                     </div>
@@ -314,6 +317,6 @@
             @if(session('error'))
                 Swal.fire('Error', '{{ session("error") }}', 'error');
             @endif
-                });
+                    });
     </script>
 @endsection

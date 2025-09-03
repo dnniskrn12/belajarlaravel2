@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
-                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'superadmin.dashboard'], ['label' => 'SK Kerja', 'route' => 'superadmin.sk_kerja.index']]" />
+                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'admin.dashboard'], ['label' => 'SK Kerja', 'route' => 'admin.skkerja.index']]" />
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
                         placeholder="Cari nomor SK atau nama pegawai...">
                 </div>
                 <div class="action-buttons">
-                    <a href="{{ route('superadmin.sk_kerja.create') }}" class="btn-add-modern bg-gradient-primary">
+                    <a href="{{ route('admin.skkerja.create') }}" class="btn-add-modern bg-gradient-primary">
                         <i class="mdi mdi-plus"></i> Tambah SK
                     </a>
                 </div>
@@ -34,23 +34,44 @@
         </div>
 
         <!-- Stats -->
-        <div class="stats-grid">
+        <div class="stats-grid" style="grid-template-columns: 500px;">
             <div class="stat-card total">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Total SK</h3>
-                        <p class="number">{{ count($skKerja) }}</p>
+                        <h3>Total SK Kerja</h3>
+                        <p class="number">{{ count($sk) }}</p>
                     </div>
                     <div class="stat-icon"><i class="mdi mdi-file-document"></i></div>
                 </div>
             </div>
         </div>
+        <!-- Added pagination controls -->
+        <div class="pagination-controls"
+            style="display: flex; align-items: center; gap: 16px; margin-top: 16px; justify-content: space-between; margin-top: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #6b7280; font-size: 14px;">Tampilkan:</span>
+                <select id="entriesPerPage" class="form-select"
+                    style="width: auto; min-width: 80px; padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;">
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span style="color: #6b7280; font-size: 14px;">data</span>
+            </div>
 
+            <div class="pagination-info" style="color: #6b7280; font-size: 14px;">
+                Menampilkan <span id="showingStart">1</span> sampai <span id="showingEnd">10</span> dari <span
+                    id="totalEntries">{{ count($sk) }}</span> data
+            </div>
+        </div>
         <!-- Table -->
         <div class="data-card">
             <div class="card-header-clean">
                 <h3 class="card-title-clean">Daftar SK Kerja</h3>
-                <span class="employee-count" id="skCount">{{ count($skKerja) }} SK</span>
+                <span class="employee-count" id="skCount">{{ count($sk) }} SK</span>
             </div>
 
             <div class="table-responsive">
@@ -59,7 +80,6 @@
                         <tr>
                             <th>No</th>
                             <th>Nomor SK</th>
-                            <th>Nomor Pegawai</th>
                             <th>Nama Pegawai</th>
                             <th>Tanggal SK</th>
                             <th>Lokasi</th>
@@ -69,23 +89,31 @@
                         </tr>
                     </thead>
                     <tbody id="skTableBody">
-                        @foreach($skKerja as $index => $sk)
+                        @forelse($sk as $index => $item)
                             <tr class="sk-row"
-                                data-search="{{ strtolower($sk->no_sk . ' ' . $sk->no_pegawai . ' ' . $sk->nama_pegawai) }}">
+                                data-search="{{ strtolower($item->no_sk . ' ' . $item->no_pegawai . ' ' . $item->nama_pegawai) }}">
                                 <td class="row-number">{{ $index + 1 }}</td>
-                                <td>{{ $sk->no_sk }}</td>
-                                <td>{{ $sk->no_pegawai }}</td>
-                                <td>{{ $sk->nama_pegawai }}</td>
-                                <td>{{ \Carbon\Carbon::parse($sk->tgl_sk)->format('d-m-Y') }}</td>
-                                <td>{{ $sk->lokasi?->nama_lokasi }}</td>
-                                <td>{{ $sk->unitkerja?->nama_unitkerja }}</td>
-                                <td>{{ $sk->jabatan?->nama_jabatan }}</td>
+                                <td>{{ $item->no_sk }}</td>
+                                  <td>
+                                    <div class="employee-info">
+
+                                        <div class="employee-details">
+                                            <h4>{{ $item->nama_pegawai }}</h4>
+                                            <p>{{ $item->no_pegawai }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($item->tgl_sk)->format('d-m-Y') }}</td>
+                                <td>{{ $item->lokasi?->nama_lokasi }}</td>
+                                <td>{{ $item->unitkerja?->nama_unitkerja }}</td>
+                                <td>{{ $item->jabatan?->nama_jabatan }}</td>
                                 <td>
                                     <div class="action-buttons-table">
-                                        <a href="{{ route('superadmin.sk_kerja.edit', $sk->id) }}" class="action-btn-table edit" title="Edit">
+                                        <a href="{{ route('admin.skkerja.edit', $item->id) }}" class="action-btn-table edit"
+                                            title="Edit">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('superadmin.sk_kerja.destroy', $sk->id) }}" method="POST"
+                                        <form action="{{ route('admin.skkerja.destroy', $item->id) }}" method="POST"
                                             class="d-inline delete-form">
                                             @csrf @method('DELETE')
                                             <button type="button" class="action-btn-table delete btn-delete" title="Hapus">
@@ -95,16 +123,37 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="9" align="center">
+                                    <div class="empty-state">
+                                        <i class="mdi mdi-file-search"></i>
+                                        <h3>Tidak ada data SK kerja</h3>
+                                        <p>Silakan tambahkan data baru terlebih dahulu</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
+            <!-- Added pagination navigation -->
+            <div class="pagination-nav"
+                style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; padding: 16px 0;">
+                <button id="prevPage" class="pagination-btn"
+                    style="padding: 8px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px;"
+                    disabled>
+                    <i class="mdi mdi-chevron-left"></i>
+                    Sebelumnya
+                </button>
 
-            <!-- Empty state -->
-            <div id="emptyState" class="empty-state" style="display:none;">
-                <i class="mdi mdi-file-search"></i>
-                <h3>Tidak ada data SK Kerja</h3>
-                <p>Tidak ada SK Kerja yang sesuai dengan pencarian</p>
+                <div id="pageNumbers" class="page-numbers" style="display: flex; gap: 4px;"></div>
+
+                <button id="nextPage" class="pagination-btn"
+                    style="padding: 8px 12px; border: 1px solid #d1d5db; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                    Selanjutnya
+                    <i class="mdi mdi-chevron-right"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -113,35 +162,152 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(function () {
+            let entriesPerPage = parseInt($('#entriesPerPage').val());
+            let currentPage = 1;
+            let filteredRows = $('.sk-row').toArray();
+
             // Search filter
             $('#searchInput').on('input', function () {
                 let search = $(this).val().toLowerCase();
-                let visible = 0;
+                filteredRows = [];
                 $('.sk-row').each(function () {
                     let match = $(this).data('search').includes(search);
-                    $(this).toggle(match);
-                    if (match) visible++;
+                    $(this).toggle(match); // sementara toggle untuk pencarian langsung
+                    if (match) filteredRows.push($(this));
                 });
-                $('#skCount').text(visible + ' SK');
-                $('#emptyState').toggle(visible === 0);
+                currentPage = 1;
+                displayPage();
             });
 
-            // Delete confirm
+            // Change entries per page
+            $('#entriesPerPage').on('change', function () {
+                entriesPerPage = parseInt($(this).val());
+                currentPage = 1;
+                displayPage();
+            });
+
+            // Prev button
+            $('#prevPage').on('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPage();
+                }
+            });
+
+            // Next button
+            $('#nextPage').on('click', function () {
+                const totalPages = Math.ceil(filteredRows.length / entriesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPage();
+                }
+            });
+
+            // Fungsi tampilkan data
+            function displayPage() {
+                $('.sk-row').hide();
+
+                const startIndex = (currentPage - 1) * entriesPerPage;
+                const endIndex = Math.min(startIndex + entriesPerPage, filteredRows.length);
+
+                for (let i = startIndex; i < endIndex; i++) {
+                    const $row = $(filteredRows[i]);
+                    $row.show();
+                    $row.find('.row-number').text(i + 1);
+                }
+
+                updatePaginationInfo();
+                updatePaginationButtons();
+            }
+
+            // Info "Menampilkan 1 sampai ..."
+            function updatePaginationInfo() {
+                const totalEntries = filteredRows.length;
+                const start = (currentPage - 1) * entriesPerPage + 1;
+                const end = Math.min(start + entriesPerPage - 1, totalEntries);
+
+                $('#showingStart').text(totalEntries ? start : 0);
+                $('#showingEnd').text(totalEntries ? end : 0);
+                $('#totalEntries').text(totalEntries);
+            }
+
+            // tombol page number
+            function updatePaginationButtons() {
+                const totalPages = Math.ceil(filteredRows.length / entriesPerPage);
+
+                // Update prev/next
+                $('#prevPage').prop('disabled', currentPage === 1);
+                $('#nextPage').prop('disabled', currentPage === totalPages || totalPages === 0);
+
+                const $pageNumbers = $('#pageNumbers');
+                $pageNumbers.empty();
+
+                if (totalPages <= 7) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        $pageNumbers.append(createPageButton(i));
+                    }
+                } else {
+                    $pageNumbers.append(createPageButton(1));
+
+                    if (currentPage > 4) {
+                        $pageNumbers.append('<span style="padding: 8px 4px;">...</span>');
+                    }
+
+                    const start = Math.max(2, currentPage - 1);
+                    const end = Math.min(totalPages - 1, currentPage + 1);
+
+                    for (let i = start; i <= end; i++) {
+                        $pageNumbers.append(createPageButton(i));
+                    }
+
+                    if (currentPage < totalPages - 3) {
+                        $pageNumbers.append('<span style="padding: 8px 4px;">...</span>');
+                    }
+
+                    if (totalPages > 1) {
+                        $pageNumbers.append(createPageButton(totalPages));
+                    }
+                }
+            }
+
+            function createPageButton(pageNum) {
+                const isActive = pageNum === currentPage;
+                const buttonStyle = isActive
+                    ? 'padding: 8px 12px; border: 1px solid #d58df7; background: #d58df7; color: white; border-radius: 6px; cursor: pointer; min-width: 40px; text-align: center;'
+                    : 'padding: 8px 12px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 6px; cursor: pointer; min-width: 40px; text-align: center;';
+
+                return $(`<button class="page-btn" data-page="${pageNum}" style="${buttonStyle}">${pageNum}</button>`)
+                    .on('click', function () {
+                        currentPage = pageNum;
+                        displayPage();
+                    });
+            }
+
+
+            // Delete confirmation
             $('.btn-delete').on('click', function () {
-                let form = $(this).closest('form');
+                const form = $(this).closest('form');
+
                 Swal.fire({
-                    title: 'Konfirmasi Hapus',
-                    text: 'SK Kerja akan dihapus permanen!',
+                    title: 'Konfirmasi Penghapusan',
+                    html: 'Yakin ingin menghapus data SK Kerja?<br><b>Data tidak bisa dikembalikan!</b>',
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
                     confirmButtonText: 'Ya, hapus',
-                    cancelButtonText: 'Batal'
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
                 }).then((result) => {
-                    if (result.isConfirmed) { form.submit(); }
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
                 });
             });
+
+            // Jalankan pertama kali
+            displayPage();
         });
     </script>
+
 @endsection

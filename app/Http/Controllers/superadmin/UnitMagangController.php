@@ -32,16 +32,21 @@ class UnitMagangController extends Controller
     {
         $unitmagang = Unit_Magang::findOrFail($id);
         $request->validate([
-            'id_unitmagang' => 'required|unique:unit_magang,id_unitmagang',
+            'id_unitmagang' => 'required|unique:unit_magang,id_unitmagang,' . $unitmagang->id,
             'nama_unitmagang' => 'required|string|max:255',
         ]);
 
         $unitmagang->update([
-        'id_unitmagang' => $request->id_unitmagang,
-        'nama_unitmagang' => $request->nama_unitmagang,
-    ]);
+            'id_unitmagang' => $request->id_unitmagang,
+            'nama_unitmagang' => $request->nama_unitmagang,
+        ]);
 
         return redirect()->back()->with('success', 'Unit magang berhasil diperbarui.');
+    }
+
+    public function edit(Unit_Magang $unitmagang)
+    {
+        return view('superadmin.unit_magang.edit', compact('unitmagang'));
     }
 
     public function destroy($id)
