@@ -14,7 +14,7 @@ class Sk_Kerja extends Model
     protected $fillable = [
         'no_sk',
         'no_pegawai',
-        'nama_pegawai', // kalau masih dipakai
+        'nama_pegawai',
         'tgl_sk',
         'id_jabatan',
         'id_unitkerja',

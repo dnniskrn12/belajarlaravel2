@@ -16,7 +16,7 @@
                 </div>
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
-            ['label' => 'Dashboard', 'route' => 'home'],
+            ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
             ['label' => 'Pegawai', 'route' => 'admin.pegawai.index'],
             ['label' => 'Edit', 'route' => 'admin.pegawai.edit'],
         ]" />

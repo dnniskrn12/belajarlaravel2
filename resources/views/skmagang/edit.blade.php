@@ -10,22 +10,21 @@
                         <i class="mdi mdi-file-document-edit"></i>
                     </div>
                     <div>
-                        <h1 class="page-title-modern" style="margin:0;">Edit SK Kerja</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Pengubahan (Kenaikan atau Penurunan) SK kerja
-                            pegawai</p>
+                        <h1 class="page-title-modern" style="margin:0;">Edit SK Magang</h1>
+                        <p class="page-subtitle-modern" style="margin:0;">Pengubahan SK Magang</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
             ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
-            ['label' => 'SK Kerja', 'route' => 'admin.skkerja.index'],
-            ['label' => 'Edit', 'route' => 'admin.skkerja.edit', 'params' => $sk->id],
+            ['label' => 'SK Magang', 'route' => 'admin.sksiswa.index'],
+            ['label' => 'Edit', 'route' => 'admin.sksiswa.edit', 'params' => $sk->id],
         ]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="action-buttons">
-                    <a href="{{ route('admin.skkerja.index') }}" class="btn-filter">
+                    <a href="{{ route('admin.sksiswa.index') }}" class="btn-filter">
                         <i class="mdi mdi-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -35,7 +34,7 @@
         <!-- SK Lama -->
         <div class="data-card" style="margin-bottom: 32px;">
             <div class="card-header-clean">
-                <h3 class="card-title-clean">Informasi SK Kerja Lama</h3>
+                <h3 class="card-title-clean">Informasi SK Magang Lama</h3>
                 <span class="form-subtitle">Data ini hanya untuk dibaca (readonly)</span>
             </div>
             <div class="form-container-modern">
@@ -50,22 +49,22 @@
                                 readonly>
                         </div>
 
-                        <!-- Nomor Pegawai -->
+                        <!-- Nomor Magang -->
                         <div class="form-group-modern">
-                            <label for="no_pegawai" class="form-label-modern">
-                                <i class="mdi mdi-identifier"></i> Nomor Pegawai
+                            <label for="no_magang" class="form-label-modern">
+                                <i class="mdi mdi-identifier"></i> Nomor Magang
                             </label>
-                            <input type="text" id="no_pegawai" class="form-input-modern readonly"
-                                value="{{ $sk->no_pegawai }} - {{$sk->nama_pegawai}}" readonly>
+                            <input type="text" id="no_magang" class="form-input-modern readonly"
+                                value="{{ $sk->no_magang }}" readonly>
                         </div>
 
-                        <!-- Nama Pegawai -->
+                        <!-- Nama Magang -->
                         <div class="form-group-modern">
-                            <label for="nama_pegawai" class="form-label-modern">
-                                <i class="mdi mdi-account"></i> Nama Pegawai
+                            <label for="nama_siswa" class="form-label-modern">
+                                <i class="mdi mdi-account"></i> Nama Siswa
                             </label>
-                            <input type="text" id="nama_pegawai" class="form-input-modern readonly"
-                                value="{{ $sk->nama_pegawai }}" readonly>
+                            <input type="text" id="nama_siswa" class="form-input-modern readonly"
+                                value="{{ $sk->nama_siswa }}" readonly>
                         </div>
 
                         <!-- Tanggal SK Lama -->
@@ -77,32 +76,15 @@
                                 value="{{ \Carbon\Carbon::parse($sk->tgl_sk)->format('d-m-Y') }}" readonly>
                         </div>
 
-                        <!-- Jabatan Lama -->
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="mdi mdi-briefcase"></i> Jabatan Lama
-                            </label>
-                            <input type="text" class="form-input-modern readonly" value="{{ $sk->jabatan?->nama_jabatan }}"
-                                readonly>
-                        </div>
-
                         <!-- Unit Kerja Lama -->
                         <div class="form-group-modern">
                             <label class="form-label-modern">
                                 <i class="mdi mdi-office-building"></i> Unit Kerja Lama
                             </label>
                             <input type="text" class="form-input-modern readonly"
-                                value="{{ $sk->unitkerja?->nama_unitkerja }}" readonly>
+                                value="{{ $sk->unitmagang?->nama_unitmagang }}" readonly>
                         </div>
 
-                        <!-- Lokasi Lama -->
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="mdi mdi-map-marker"></i> Lokasi Lama
-                            </label>
-                            <input type="text" class="form-input-modern readonly" value="{{ $sk->lokasi?->nama_lokasi }}"
-                                readonly>
-                        </div>
                     </div>
                 </div>
 
@@ -112,12 +94,12 @@
         <!-- SK Baru -->
         <div class="data-card">
             <div class="card-header-clean">
-                <h3 class="card-title-clean">Input SK Kerja Baru</h3>
-                <span class="form-subtitle">Isi data SK baru pegawai</span>
+                <h3 class="card-title-clean">Input SK Magang Baru</h3>
+                <span class="form-subtitle">Isi data SK baru siswa magang</span>
             </div>
 
             <div class="form-container-modern">
-                <form action="{{ route('admin.skkerja.update', $sk->id) }}" method="POST">
+                <form action="{{ route('admin.sksiswa.update', $sk->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -146,62 +128,29 @@
                                 @error('tgl_sk') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
 
-                            <!-- Jabatan Baru -->
+                            <!-- Unit Magang Baru -->
                             <div class="form-group-modern">
-                                <label for="id_jabatan" class="form-label-modern">
-                                    <i class="mdi mdi-briefcase"></i> Jabatan Baru <span class="required">*</span>
-                                </label>
-                                <select name="id_jabatan" id="id_jabatan"
-                                    class="form-input-modern @error('id_jabatan') error @enderror" required>
-                                    <option value="">-- Pilih Jabatan --</option>
-                                    @foreach($jabatan as $j)
-                                        <option value="{{ $j->id }}" {{ old('id_jabatan') == $j->id ? 'selected' : '' }}>
-                                            {{ $j->nama_jabatan }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('id_jabatan') <small class="text-danger">{{ $message }}</small> @enderror
-                            </div>
-
-                            <!-- Unit Kerja Baru -->
-                            <div class="form-group-modern">
-                                <label for="id_unitkerja" class="form-label-modern">
+                                <label for="id_unitmagang" class="form-label-modern">
                                     <i class="mdi mdi-office-building"></i> Unit Kerja Baru <span class="required">*</span>
                                 </label>
-                                <select name="id_unitkerja" id="id_unitkerja"
-                                    class="form-input-modern @error('id_unitkerja') error @enderror" required>
+                                <select name="id_unitmagang" id="id_unitmagang"
+                                    class="form-input-modern @error('id_unitmagang') error @enderror" required>
                                     <option value="">-- Pilih Unit Kerja --</option>
-                                    @foreach($unitkerja as $u)
-                                        <option value="{{ $u->id }}" {{ old('id_unitkerja') == $u->id ? 'selected' : '' }}>
-                                            {{ $u->nama_unitkerja }}
+                                    @foreach($unitmagang as $u)
+                                        <option value="{{ $u->id }}" {{ old('id_unitmagang') == $u->id ? 'selected' : '' }}>
+                                            {{ $u->nama_unitmagang }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('id_unitkerja') <small class="text-danger">{{ $message }}</small> @enderror
+                                @error('id_unitmagang') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
 
-                            <!-- Lokasi Baru -->
-                            <div class="form-group-modern">
-                                <label for="id_lokasi" class="form-label-modern">
-                                    <i class="mdi mdi-map-marker"></i> Lokasi Baru <span class="required">*</span>
-                                </label>
-                                <select name="id_lokasi" id="id_lokasi"
-                                    class="form-input-modern @error('id_lokasi') error @enderror" required>
-                                    <option value="">-- Pilih Lokasi --</option>
-                                    @foreach($lokasi as $l)
-                                        <option value="{{ $l->id }}" {{ old('id_lokasi') == $l->id ? 'selected' : '' }}>
-                                            {{ $l->nama_lokasi }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('id_lokasi') <small class="text-danger">{{ $message }}</small> @enderror
-                            </div>
                         </div>
                     </div>
 
                     <!-- Tombol Aksi -->
                     <div class="form-actions">
-                        <a href="{{ route('admin.skkerja.index') }}" class="btn-cancel">
+                        <a href="{{ route('admin.sksiswa.index') }}" class="btn-cancel">
                             <i class="mdi mdi-close"></i> Batal
                         </a>
                         <button type="submit" class="btn-submit bg-gradient-primary">

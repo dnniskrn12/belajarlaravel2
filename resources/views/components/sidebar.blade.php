@@ -52,7 +52,7 @@
                 ]" />
                     <x-sidebar.dropdown id="magang-dropdown" title="Magang" icon="mdi mdi-account-school" :items="[
                     ['label' => 'Data Magang', 'url' => route('admin.magang.index')],
-                    ['label' => 'Daftar SK Magang', 'url' => url('pages/ui-features/dropdowns.html')],
+                    ['label' => 'Daftar SK Magang', 'url' => route('admin.sksiswa.index')],
                     ['label' => 'Nilai Magang', 'url' => url('pages/ui-features/dropdowns.html')],
                     ['label' => 'Sertifikat', 'url' => url('pages/ui-features/dropdowns.html')],
                 ]" />

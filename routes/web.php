@@ -6,6 +6,7 @@ use App\Http\Controllers\Pimpinan\DashboardController as PimpinanDashboardContro
 use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SkKerjaController;
 use App\Http\Controllers\Admin\MagangController;
+use App\Http\Controllers\Admin\SkMagangController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\Superadmin\JabatanController;
 use App\Http\Controllers\Superadmin\UnitKerjaController;
@@ -43,6 +44,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('skkerja', SkKerjaController::class);
     Route::resource('magang', MagangController::class);
+    Route::resource('sksiswa', SkMagangController::class);
 });
 Route::prefix('superadmin')->name('superadmin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
