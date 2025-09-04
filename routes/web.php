@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SkKerjaController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\SkMagangController;
-use App\Http\Controllers\SuperAdmin\UserController;
+use App\Http\Controllers\Admin\NilaiPklController;
+use App\Http\Controllers\Superadmin\UserController;
 use App\Http\Controllers\Superadmin\JabatanController;
 use App\Http\Controllers\Superadmin\UnitKerjaController;
 use App\Http\Controllers\Superadmin\UnitMagangController;
@@ -16,7 +17,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Superadmin\SuperAdminController;
 use App\Http\Controllers\Pimpinan\PimpinanController;
 use App\Http\Controllers\HomeController;
-use App\Models\Lokasi;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,13 +39,17 @@ Auth::routes();
 Route::get('/', function () {
     return redirect('/login');
 });
+
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('skkerja', SkKerjaController::class);
     Route::resource('magang', MagangController::class);
     Route::resource('sksiswa', SkMagangController::class);
+    Route::resource('nilaipkl', NilaiPklController::class);
+
 });
+
 Route::prefix('superadmin')->name('superadmin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('user', UserController::class);
@@ -54,14 +58,8 @@ Route::prefix('superadmin')->name('superadmin.')->middleware(['auth'])->group(fu
     Route::resource('unitkerja', UnitKerjaController::class);
     Route::resource('unitmagang', UnitMagangController::class);
     Route::resource('lokasi', LokasiController::class);
-
-
 });
 
 Route::prefix('pimpinan')->name('pimpinan.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [PimpinanDashboardController::class, 'index'])->name('dashboard');
 });
-
-
-
-

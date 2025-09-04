@@ -19,13 +19,12 @@ class PendidikanMagangSeeder extends Seeder
             'sma_ma_smk' => [5, 6, 7] // SMA/MA/SMK, ambil 1 random
         ];
 
-        $jenjangOpsional = [8, 9, 10, 11, 12, 13]; // S1, S2, S3, D1, D3, D4
+        $jenjangOpsional = [8]; // S1
 
         $magangList = Magang::all();
 
         foreach ($magangList as $magang) {
 
-            // Masukkan jenjang wajib: satu random dari tiap kategori
             foreach ($kategoriWajib as $kategori) {
                 $id_jjg = $faker->randomElement($kategori);
 

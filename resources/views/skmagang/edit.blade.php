@@ -64,7 +64,7 @@
                                 <i class="mdi mdi-account"></i> Nama Siswa
                             </label>
                             <input type="text" id="nama_siswa" class="form-input-modern readonly"
-                                value="{{ $sk->nama_siswa }}" readonly>
+                                value="{{ $sk->magang->nama_siswa }}" readonly>
                         </div>
 
                         <!-- Tanggal SK Lama -->
@@ -76,10 +76,10 @@
                                 value="{{ \Carbon\Carbon::parse($sk->tgl_sk)->format('d-m-Y') }}" readonly>
                         </div>
 
-                        <!-- Unit Kerja Lama -->
+                        <!-- Unit Magang Lama -->
                         <div class="form-group-modern">
                             <label class="form-label-modern">
-                                <i class="mdi mdi-office-building"></i> Unit Kerja Lama
+                                <i class="mdi mdi-office-building"></i> Unit Magang Lama
                             </label>
                             <input type="text" class="form-input-modern readonly"
                                 value="{{ $sk->unitmagang?->nama_unitmagang }}" readonly>
@@ -131,11 +131,11 @@
                             <!-- Unit Magang Baru -->
                             <div class="form-group-modern">
                                 <label for="id_unitmagang" class="form-label-modern">
-                                    <i class="mdi mdi-office-building"></i> Unit Kerja Baru <span class="required">*</span>
+                                    <i class="mdi mdi-office-building"></i> Unit Magang Baru <span class="required">*</span>
                                 </label>
                                 <select name="id_unitmagang" id="id_unitmagang"
                                     class="form-input-modern @error('id_unitmagang') error @enderror" required>
-                                    <option value="">-- Pilih Unit Kerja --</option>
+                                    <option value="">-- Pilih Unit Magang --</option>
                                     @foreach($unitmagang as $u)
                                         <option value="{{ $u->id }}" {{ old('id_unitmagang') == $u->id ? 'selected' : '' }}>
                                             {{ $u->nama_unitmagang }}

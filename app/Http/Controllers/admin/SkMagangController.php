@@ -24,7 +24,7 @@ class SkMagangController extends Controller
      */
     public function create()
     {
-        $magang   = Magang::all();
+        $magang = Magang::all();
         $unitmagang = Unit_Magang::all();
 
         return view('skmagang.create', compact('magang', 'unitmagang'));
@@ -36,21 +36,21 @@ class SkMagangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no_sk'        => 'required|unique:sk_magang,no_sk',
-            'no_magang'   => 'required|exists:magang,no_magang',
+            'no_sk' => 'required|unique:sk_magang,no_sk',
+            'no_magang' => 'required|exists:magang,no_magang',
             'id_unitmagang' => 'required|exists:unit_magang,id',
-            'tgl_sk'       => 'required|date',
+            'tgl_sk' => 'required|date',
         ]);
 
         $magang = Magang::where('no_magang', $request->no_magang)->first();
 
-          Sk_Magang::create([
-        'no_sk'        => $request->no_sk,
-        'no_magang'   => $request->no_magang,
-        'nama_siswa' => $magang->nama_siswa,
-        'id_unitmagang' => $request->id_unitmagang,
-        'tgl_sk'       => $request->tgl_sk,
-    ]);
+        Sk_Magang::create([
+            'no_sk' => $request->no_sk,
+            'no_magang' => $request->no_magang,
+            'nama_siswa' => $magang->nama_siswa,
+            'id_unitmagang' => $request->id_unitmagang,
+            'tgl_sk' => $request->tgl_sk,
+        ]);
 
         return redirect()->route('admin.sksiswa.index')
             ->with('success', 'Data SK Magang berhasil ditambahkan.');
@@ -61,8 +61,8 @@ class SkMagangController extends Controller
      */
     public function edit($id)
     {
-        $sk        = Sk_Magang::findOrFail($id);
-        $magang   = Magang::all();
+        $sk = Sk_Magang::findOrFail($id);
+        $magang = Magang::all();
         $unitmagang = Unit_Magang::all();
 
         return view('skmagang.edit', compact('sk', 'magang', 'unitmagang'));
@@ -76,17 +76,26 @@ class SkMagangController extends Controller
         $sk = Sk_Magang::findOrFail($id);
 
         $request->validate([
-            'no_sk'        => 'required|unique:sk_magang,no_sk,' . $sk->id,
-            'no_magang'   => 'required|exists:magang,no_magang',
+            'no_sk' => 'required|unique:sk_magang,no_sk,' . $sk->id,
             'id_unitmagang' => 'required|exists:unit_magang,id',
-            'tgl_sk'       => 'required|date',
+            'tgl_sk' => 'required|date',
         ]);
 
-        $sk->update($request->all());
+        // Ambil data magang lama dari $sk
+        $magang = $sk->magang; // pakai relasi
+
+        $sk->update([
+            'no_sk' => $request->no_sk,
+            'no_magang' => $sk->no_magang, // tetap pakai yang lama
+            'nama_siswa' => $magang?->nama_siswa, // ambil dari relasi
+            'id_unitmagang' => $request->id_unitmagang,
+            'tgl_sk' => $request->tgl_sk,
+        ]);
 
         return redirect()->route('admin.sksiswa.index')
             ->with('success', 'Data SK Magang berhasil diperbarui.');
     }
+
 
     /**
      * Hapus data SK Magang
