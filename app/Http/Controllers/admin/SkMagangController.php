@@ -15,7 +15,7 @@ class SkMagangController extends Controller
      */
     public function index()
     {
-        $sk = Sk_Magang::with(['magang', 'unitmagang'])->get();
+        $sk = Sk_Magang::with(['magang', 'unit_magang'])->get();
         return view('skmagang.index', compact('sk'));
     }
 

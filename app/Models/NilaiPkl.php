@@ -26,6 +26,12 @@ class NilaiPKL extends Model
         return $this->belongsTo(Magang::class, 'no_magang', 'no_magang');
     }
 
+
+    public function unit_magang()
+    {
+        return $this->belongsTo(Unit_Magang::class, 'id_unitmagang');
+    }
+
     public function sertifikat()
     {
         return $this->hasOne(Sertifikat::class, 'id_nilai_pkl');

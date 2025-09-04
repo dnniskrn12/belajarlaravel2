@@ -25,8 +25,8 @@ class Sk_Magang extends Model
         return $this->belongsTo(Magang::class, 'no_magang', 'no_magang');
     }
 
-    // Relasi ke Unit Kerja
-    public function unitmagang()
+    // Relasi ke Unit Magang
+    public function unit_magang()
     {
         return $this->belongsTo(Unit_Magang::class, 'id_unitmagang', 'id');
     }

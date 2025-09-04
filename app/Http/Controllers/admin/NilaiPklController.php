@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\NilaiPKL;
 use App\Models\Magang;
-use App\Models\Sertifikat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NilaiPKLController extends Controller
 {
@@ -15,7 +15,6 @@ class NilaiPKLController extends Controller
      */
     public function index()
     {
-        $nilaiPkl = NilaiPkl::all();
         $nilaiPkl = NilaiPKL::with('magang')->get();
         return view('nilaipkl.index', compact('nilaiPkl'));
     }
@@ -46,7 +45,7 @@ class NilaiPKLController extends Controller
             $file = $request->file('file_scan_nilai');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('scan_nilai_pkl', $filename, 'public');
-            $filePath = $filename;  // simpan nama file ke $filePath
+            $filePath = $filename;
         }
 
         NilaiPKL::create([
@@ -56,11 +55,13 @@ class NilaiPKLController extends Controller
             'file_scan_nilai' => $filePath,
         ]);
 
-
         return redirect()->route('admin.nilaipkl.index')
             ->with('success', 'Data nilai Magang berhasil ditambahkan.');
     }
 
+    /**
+     * Update nilai
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -72,13 +73,18 @@ class NilaiPKLController extends Controller
         $nilai = NilaiPKL::findOrFail($id);
 
         $filePath = $nilai->file_scan_nilai;
+
         if ($request->hasFile('file_scan_nilai')) {
+            // hapus file lama kalau ada
+            if ($filePath && Storage::disk('public')->exists('scan_nilai_pkl/' . $filePath)) {
+                Storage::disk('public')->delete('scan_nilai_pkl/' . $filePath);
+            }
+
             $file = $request->file('file_scan_nilai');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('scan_nilai_pkl', $filename, 'public');
-            $filePath = $filename;  // simpan nama file ke $filePath
+            $filePath = $filename;
         }
-
 
         $nilai->update([
             'nilai_akhir' => $request->nilai_pkl,
@@ -90,7 +96,6 @@ class NilaiPKLController extends Controller
             ->with('success', 'Data nilai Magang berhasil diperbarui.');
     }
 
-
     /**
      * Form edit nilai
      */
@@ -101,22 +106,27 @@ class NilaiPKLController extends Controller
         return view('nilaipkl.edit', compact('nilai', 'magang'));
     }
 
-
     /**
-     * Hapus nilai
+     * Hapus nilai + file scan
      */
     public function destroy($id)
     {
         $nilai = NilaiPKL::findOrFail($id);
+
+        // hapus file jika ada
+        if ($nilai->file_scan_nilai && Storage::disk('public')->exists('scan_nilai_pkl/' . $nilai->file_scan_nilai)) {
+            Storage::disk('public')->delete('scan_nilai_pkl/' . $nilai->file_scan_nilai);
+        }
+
         $nilai->delete();
 
         return redirect()->route('admin.nilaipkl.index')
-            ->with('success', 'Data nilai Magang berhasil dihapus.');
+            ->with('success', 'Data nilai Magang berhasil dihapus beserta file scannya.');
     }
 
     public function download($filename)
     {
-        $path = storage_path('app/scan_nilai_pkl/' . $filename);
+        $path = storage_path('app/public/scan_nilai_pkl/' . $filename);
 
         if (!file_exists($path)) {
             abort(404);
@@ -124,5 +134,4 @@ class NilaiPKLController extends Controller
 
         return response()->file($path);
     }
-
 }

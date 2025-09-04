@@ -200,7 +200,7 @@
                                 <td>
                                     <div class="action-buttons-table">
                                         <a href="{{ route('admin.sertifikat.create', $item->id) }}" class="action-btn-table view"
-                                            title="Detail">
+                                            title="Lihat Sertifikat">
                                             <i class="mdi mdi-eye"></i>
                                         </a>
 

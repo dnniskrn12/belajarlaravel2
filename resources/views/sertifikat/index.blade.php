@@ -11,8 +11,8 @@
                         <i class="mdi mdi-certificate"></i>
                     </div>
                     <div>
-                        <h1 class="page-title-modern" style="margin:0;">Sertifikat PKL</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Kelola sertifikat praktek kerja lapangan siswa</p>
+                        <h1 class="page-title-modern" style="margin:0;">Sertifikat Magang</h1>
+                        <p class="page-subtitle-modern" style="margin:0;">Kelola sertifikat Magang siswa</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
@@ -44,18 +44,6 @@
 
         <!-- Stats Cards -->
         <div class="stats-grid">
-            <div class="stat-card total">
-                <div class="stat-content">
-                    <div class="stat-info">
-                        <h3>Total Sertifikat</h3>
-                        <p class="number">{{ count($totalSertifikat) }}</p>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="mdi mdi-certificate"></i>
-                    </div>
-                </div>
-            </div>
-
             <div class="stat-card active">
                 <div class="stat-content">
                     <div class="stat-info">
@@ -63,7 +51,7 @@
                         <p class="number">{{ $sertifikat->whereNotNull('file_sertifikat')->count() }}</p>
                     </div>
                     <div class="stat-icon">
-                        <i class="mdi mdi-check-circle"></i>
+                        <i class="mdi mdi-certificate"></i>
                     </div>
                 </div>
             </div>
@@ -193,11 +181,6 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons-table">
-                                        <a href="{{ route('admin.sertifikat.show', $item->id) }}" class="action-btn-table view"
-                                            title="Detail">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
-
                                         <a href="{{ route('admin.sertifikat.edit', $item->id) }}" class="action-btn-table edit"
                                             title="Edit">
                                             <i class="mdi mdi-pencil"></i>
@@ -265,7 +248,7 @@
                         <div class="modal-header"
                             style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none;">
                             <h5 class="modal-title" style="font-weight: 600;">
-                                <i class="mdi mdi-certificate me-2"></i>Sertifikat PKL - {{ $item->nilaiPkl->nama_siswa }}
+                                <i class="mdi mdi-certificate me-2"></i>Sertifikat Magang - {{ $item->nilaiPkl->magang->nama_siswa }}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 style="filter: brightness(0) invert(1);"></button>
@@ -301,10 +284,11 @@
                                     style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;">
                                     <div class="info-item">
                                         <strong>Nama Siswa:</strong><br>
-                                        {{ $item->nilaiPkl->nama_siswa }}
+                                        {{ $item->nilaiPkl->magang->nama_siswa }}
+
                                     </div>
                                     <div class="info-item">
-                                        <strong>Nilai PKL:</strong><br>
+                                        <strong>Nilai Magang:</strong><br>
                                         {{ $item->nilaiPkl->nilai_akhir }}
                                     </div>
                                     @if($item->nomor_sertifikat)
@@ -330,163 +314,6 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        .student-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .student-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 600;
-            color: #92400e;
-        }
-
-        .student-details h4 {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .student-details p {
-            margin: 0;
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .nilai-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 12px;
-            min-width: 40px;
-            text-align: center;
-            display: inline-block;
-            margin-bottom: 4px;
-        }
-
-        .nilai-lulus {
-            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-            color: #166534;
-        }
-
-        .nilai-tidak-lulus {
-            background: linear-gradient(135deg, #fef2f2, #fecaca);
-            color: #dc2626;
-        }
-
-        .nilai-status {
-            font-size: 11px;
-            color: #6b7280;
-            text-align: center;
-        }
-
-        .nomor-sertifikat,
-        .tanggal-sertifikat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            color: #374151;
-        }
-
-        .nomor-sertifikat i,
-        .tanggal-sertifikat i {
-            color: #d58df7;
-            font-size: 16px;
-        }
-
-        .status-tersertifikat {
-            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-            color: #166534;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .status-pending {
-            background: linear-gradient(135deg, #fff7ed, #fed7aa);
-            color: #ea580c;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .btn-file-sertifikat {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
-            color: #92400e;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-file-sertifikat:hover {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            transform: translateY(-1px);
-        }
-
-        .action-btn-table.download {
-            background: #10b981;
-            color: white;
-        }
-
-        .action-btn-table.download:hover {
-            background: #059669;
-        }
-
-        .stat-card.warning {
-            background: linear-gradient(135deg, #fff7ed, #fed7aa);
-            border-left: 4px solid #f59e0b;
-        }
-
-        .stat-card.warning .stat-icon {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .stat-card.warning .number {
-            color: #92400e;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .sertifikat-info {
-            font-size: 14px;
-            color: #374151;
-        }
-
-        .info-item {
-            text-align: center;
-            min-width: 120px;
-        }
-
-        .info-item strong {
-            color: #1f2937;
-        }
-    </style>
 
     <script>
         $(document).ready(function () {

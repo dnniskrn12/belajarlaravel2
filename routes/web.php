@@ -50,7 +50,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('sksiswa', SkMagangController::class);
     Route::resource('nilaipkl', NilaiPklController::class);
     Route::resource('sertifikat', SertifikatController::class);
-    Route::get('sertifikat/create/{nilaiPklId?}', [SertifikatController::class, 'create'])->name('admin.sertifikat.create');
 
 });
 

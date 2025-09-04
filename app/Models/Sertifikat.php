@@ -24,4 +24,8 @@ class Sertifikat extends Model
     {
         return $this->belongsTo(NilaiPKL::class, 'id_nilai_pkl');
     }
+    public function unitmagang()
+    {
+        return $this->belongsTo(Unit_Magang::class, 'id_unitmagang', 'id');
+    }
 }

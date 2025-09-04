@@ -37,4 +37,8 @@ class Magang extends Model
         return $this->hasMany(Pend_Magang::class, 'no_magang', 'no_magang');
     }
 
+    public function sk_magang()
+    {
+        return $this->hasOne(Sk_Magang::class, 'no_magang', 'no_magang');
+    }
 }
