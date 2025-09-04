@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SkKerjaController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\SkMagangController;
 use App\Http\Controllers\Admin\NilaiPklController;
+use App\Http\Controllers\Admin\SertifikatController;
 use App\Http\Controllers\Superadmin\UserController;
 use App\Http\Controllers\Superadmin\JabatanController;
 use App\Http\Controllers\Superadmin\UnitKerjaController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Superadmin\SuperAdminController;
 use App\Http\Controllers\Pimpinan\PimpinanController;
 use App\Http\Controllers\HomeController;
+use App\Models\Sertifikat;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,6 +49,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('magang', MagangController::class);
     Route::resource('sksiswa', SkMagangController::class);
     Route::resource('nilaipkl', NilaiPklController::class);
+    Route::resource('sertifikat', SertifikatController::class);
+    Route::get('sertifikat/create/{nilaiPklId?}', [SertifikatController::class, 'create'])->name('admin.sertifikat.create');
 
 });
 

@@ -8,27 +8,28 @@
             <div class="header-top" style="display: flex; align-items: center; justify-content: space-between;">
                 <div class="header-title" style="display: flex; align-items: center; gap: 12px;">
                     <div class="header-icon bg-gradient-primary">
-                        <i class="mdi mdi-school"></i>
+                        <i class="mdi mdi-certificate"></i>
                     </div>
                     <div>
-                        <h1 class="page-title-modern" style="margin:0;">Nilai Magang</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Kelola nilai magang siswa</p>
+                        <h1 class="page-title-modern" style="margin:0;">Sertifikat PKL</h1>
+                        <p class="page-subtitle-modern" style="margin:0;">Kelola sertifikat praktek kerja lapangan siswa</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
-                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'admin.dashboard'], ['label' => 'Nilai Magang', 'route' => 'admin.nilaipkl.index'],]" />
+                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'admin.dashboard'], ['label' => 'Sertifikat', 'route' => 'admin.sertifikat.index'],]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="search-container">
                     <i class="mdi mdi-magnify search-icon"></i>
-                    <input type="text" id="searchInput" class="search-input" placeholder="Cari nama siswa atau nilai...">
+                    <input type="text" id="searchInput" class="search-input"
+                        placeholder="Cari nama siswa atau nomor sertifikat...">
                 </div>
 
                 <div class="action-buttons">
-                    <a href="{{ route('admin.nilaipkl.create') }}" class="btn-add-modern bg-gradient-primary">
+                    <a href="{{ route('admin.sertifikat.create') }}" class="btn-add-modern bg-gradient-primary">
                         <i class="mdi mdi-plus"></i>
-                        Tambah Nilai Magang
+                        Tambah Sertifikat
                     </a>
                 </div>
             </div>
@@ -36,8 +37,8 @@
             <!-- Filter Chips -->
             <div class="filter-chips">
                 <span class="filter-chip active" data-filter="all">Semua</span>
-                <span class="filter-chip" data-filter="lulus">Lulus (≥70)</span>
-                <span class="filter-chip" data-filter="tidak-lulus">Tidak Lulus (≤70)</span>
+                <span class="filter-chip" data-filter="tersertifikat">Tersertifikat</span>
+                <span class="filter-chip" data-filter="belum-tersertifikat">Belum Tersertifikat</span>
             </div>
         </div>
 
@@ -46,11 +47,11 @@
             <div class="stat-card total">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Total Siswa Magang</h3>
-                        <p class="number">{{ count($nilaiPkl) }}</p>
+                        <h3>Total Sertifikat</h3>
+                        <p class="number">{{ count($totalSertifikat) }}</p>
                     </div>
                     <div class="stat-icon">
-                        <i class="mdi mdi-school"></i>
+                        <i class="mdi mdi-certificate"></i>
                     </div>
                 </div>
             </div>
@@ -58,8 +59,8 @@
             <div class="stat-card active">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Lulus Magang</h3>
-                        <p class="number">{{ $nilaiPkl->where('nilai_akhir', '>=', 70)->count() }}</p>
+                        <h3>Tersertifikat</h3>
+                        <p class="number">{{ $sertifikat->whereNotNull('file_sertifikat')->count() }}</p>
                     </div>
                     <div class="stat-icon">
                         <i class="mdi mdi-check-circle"></i>
@@ -70,11 +71,11 @@
             <div class="stat-card inactive">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Belum Lulus</h3>
-                        <p class="number">{{ $nilaiPkl->where('nilai_akhir', '<', 70)->count() }}</p>
+                        <h3>Belum Tersertifikat</h3>
+                        <p class="number">{{ $belumTersertifikat }}</p>
                     </div>
                     <div class="stat-icon">
-                        <i class="mdi mdi-alert-circle"></i>
+                        <i class="mdi mdi-clock-outline"></i>
                     </div>
                 </div>
             </div>
@@ -82,13 +83,11 @@
             <div class="stat-card warning">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Rata-rata Nilai</h3>
-                        <p class="number">
-                            {{ $nilaiPkl->avg('nilai_akhir') ? number_format($nilaiPkl->avg('nilai_akhir'), 1) : '0' }}
-                        </p>
+                        <h3>Bulan Ini</h3>
+                        <p class="number">{{ $totalBulanIni }}</p>
                     </div>
                     <div class="stat-icon">
-                        <i class="mdi mdi-chart-line"></i>
+                        <i class="mdi mdi-calendar-month"></i>
                     </div>
                 </div>
             </div>
@@ -113,15 +112,15 @@
 
             <div class="pagination-info" style="color: #6b7280; font-size: 14px;">
                 Menampilkan <span id="showingStart">1</span> sampai <span id="showingEnd">10</span> dari <span
-                    id="totalEntries">{{ count($nilaiPkl) }}</span> data
+                    id="totalEntries">{{ count($sertifikat) }}</span> data
             </div>
         </div>
 
-        <!-- Nilai Magang Table -->
+        <!-- Sertifikat Table -->
         <div class="data-card">
             <div class="card-header-clean">
-                <h3 class="card-title-clean">Daftar Nilai Magang</h3>
-                <span class="employee-count" id="nilaiCount">{{ count($nilaiPkl) }} siswa</span>
+                <h3 class="card-title-clean">Daftar Sertifikat</h3>
+                <span class="employee-count" id="sertifikatCount">{{ count($sertifikat) }} sertifikat</span>
             </div>
 
             <div class="table-responsive">
@@ -129,87 +128,89 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Siswa</th>
-                            <th>Nilai Magang</th>
+                            <th>Siswa</th>
+                            <th>Nomor Sertifikat</th>
+                            <th>Tanggal Sertifikat</th>
                             <th>Status</th>
-                            <th>Catatan</th>
-                            <th>File Scan</th>
+                            <th>File Sertifikat</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="nilaiTableBody">
-                        @forelse ($nilaiPkl as $index => $item)
-                            <tr class="nilai-row" data-status="{{ $item->nilai_akhir >= 70 ? 'lulus' : 'tidak-lulus' }}"
-                                data-search="{{ strtolower($item->magang->nama_siswa . ' ' . $item->nilai_akhir . ' ' . $item->catatan) }}">
+                    <tbody id="sertifikatTableBody">
+                        @foreach ($sertifikat as $index => $item)
+                            <tr class="sertifikat-row"
+                                data-status="{{ $item->file_sertifikat ? 'tersertifikat' : 'belum-tersertifikat' }}"
+                                data-search="{{ strtolower(($item->nilaiPkl->magang->nama_siswa ?? '') . ' ' . ($item->nomor_sertifikat ?? '') . ' ' . ($item->nilaiPkl->nilai_akhir ?? '')) }}">
 
                                 <td class="row-number">{{ $index + 1 }}</td>
                                 <td>
                                     <div class="employee-info">
                                         <div class="employee-avatar">
-                                            {{ strtoupper(substr($item->magang->nama_siswa, 0, 1)) }}
+                                            {{ strtoupper(substr($item->nilaiPkl->magang->nama_siswa ?? '-', 0, 1)) }}
                                         </div>
                                         <div class="employee-details">
-                                            <h4>{{ $item->magang->nama_siswa }}</h4>
-                                            <p>{{ $item->no_magang }}</p>
+                                            <h4>{{ $item->nilaiPkl->magang->nama_siswa ?? 'Tidak Ada Data' }}</h4>
+                                            <p>{{ $item->nilaiPkl->magang->no_magang ?? '-' }}</p>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="nilai-display">
-                                        <span
-                                            class="nilai-badge {{ $item->nilai_akhir >= 70 ? 'nilai-lulus' : 'nilai-tidak-lulus' }}">
-                                            {{ $item->nilai_akhir }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span
-                                        class="status-badge {{ $item->nilai_akhir >= 70 ? 'status-active' : 'status-inactive' }}">
-                                        {{ $item->nilai_akhir >= 70 ? 'Lulus' : 'Tidak Lulus' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="catatan-info">
-                                        @if($item->catatan)
-                                            <p class="catatan-text">{{ Str::limit($item->catatan, 50) }}</p>
-                                            @if(strlen($item->catatan) > 50)
-                                                <button type="button" class="btn-detail-catatan" data-catatan="{{ $item->catatan }}"
-                                                    data-nama="{{ $item->magang->nama_siswa }}" data-bs-toggle="modal"
-                                                    data-bs-target="#catatanModal">
-                                                    Lihat selengkapnya
-                                                </button>
-                                            @endif
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td>
-                                    @if($item->file_scan_nilai)
-                                        <!-- Tombol Preview Modal -->
-                                        <button type="button" class="btn-file-scan" data-bs-toggle="modal"
-                                            data-bs-target="#fileScanModal{{ $item->id }}">
-                                            <i class="mdi mdi-file-document"></i>
-                                            Lihat File
-                                        </button>
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
                                 </td>
 
                                 <td>
+                                    @if($item->nomor_sertifikat)
+                                        <div class="nomor-sertifikat">
+                                            <i class="mdi mdi-numeric"></i>
+                                            {{ $item->nomor_sertifikat }}
+                                        </div>
+                                    @else
+                                        <span class="text-muted">Belum diisi</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->tanggal_sertifikat)
+                                        <div class="tanggal-sertifikat">
+                                            <i class="mdi mdi-calendar"></i>
+                                            {{ date('d M Y', strtotime($item->tanggal_sertifikat)) }}
+                                        </div>
+                                    @else
+                                    <span class="text-muted">Belum diisi</span> @endif
+                                </td>
+                                <td>
+                                    <span
+                                        class="status-badge {{ $item->file_sertifikat ? 'status-tersertifikat' : 'status-pending' }}">
+                                        {{ $item->file_sertifikat ? 'Tersertifikat' : 'Belum Lengkap' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($item->file_sertifikat)
+                                        <button type="button" class="btn-file-sertifikat" data-bs-toggle="modal"
+                                            data-bs-target="#fileSertifikatModal{{ $item->id }}">
+                                            <i class="mdi mdi-certificate"></i>
+                                            Lihat Sertifikat
+                                        </button>
+                                    @else
+                                        <span class="text-muted">Belum ada file</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <div class="action-buttons-table">
-                                        <a href="{{ route('admin.sertifikat.create', $item->id) }}" class="action-btn-table view"
+                                        <a href="{{ route('admin.sertifikat.show', $item->id) }}" class="action-btn-table view"
                                             title="Detail">
                                             <i class="mdi mdi-eye"></i>
                                         </a>
 
-                                        <a href="{{ route('admin.nilaipkl.edit', $item->id) }}" class="action-btn-table edit"
+                                        <a href="{{ route('admin.sertifikat.edit', $item->id) }}" class="action-btn-table edit"
                                             title="Edit">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
 
-                                        <form action="{{ route('admin.nilaipkl.destroy', $item->id) }}" method="POST"
+                                        @if($item->file_sertifikat)
+                                            <a href="{{ asset('storage/sertifikat_pkl/' . $item->file_sertifikat) }}"
+                                                class="action-btn-table download" title="Download" download>
+                                                <i class="mdi mdi-download"></i>
+                                            </a>
+                                        @endif
+
+                                        <form action="{{ route('admin.sertifikat.destroy', $item->id) }}" method="POST"
                                             class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -220,14 +221,17 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-
-                        @endforelse
+                        @endforeach
                     </tbody>
-
                 </table>
             </div>
 
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="mdi mdi-certificate-outline"></i>
+                <h3>Tidak ada data sertifikat</h3>
+                <p>Tidak ada sertifikat yang sesuai dengan pencarian</p>
+            </div>
             <!-- Added pagination navigation -->
             <div class="pagination-nav"
                 style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; padding: 16px 0;">
@@ -249,77 +253,73 @@
                 </button>
             </div>
 
-            <!-- Empty State -->
-            <div id="emptyState" class="empty-state" style="display: none;">
-                <i class="mdi mdi-school-outline"></i>
-                <h3>Tidak ada data nilai Magang</h3>
-                <p>Tidak ada nilai Magang yang sesuai dengan pencarian</p>
-            </div>
         </div>
     </div>
 
-    <!-- Catatan Modal -->
-    <div class="modal fade" id="catatanModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden;">
-                <div class="modal-header"
-                    style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none;">
-                    <h5 class="modal-title" style="font-weight: 600;">
-                        <i class="mdi mdi-note-text me-2"></i>Catatan Magang - <span id="catatanNamaSiswa"></span>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        style="filter: brightness(0) invert(1);"></button>
-                </div>
-                <div class="modal-body" style="padding: 32px;">
-                    <div class="catatan-full" id="catatanFull" style="line-height: 1.6; color: #374151;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- File Scan Modals -->
-    @foreach ($nilaiPkl as $item)
-        @if($item->file_scan_nilai)
-            <div class="modal fade" id="fileScanModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
+    <!-- File Sertifikat Modals -->
+    @foreach ($sertifikat as $item)
+        @if($item->file_sertifikat)
+            <div class="modal fade" id="fileSertifikatModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden;">
                         <div class="modal-header"
-                            style="background: linear-gradient(135deg, #516bff, #1a28e9); color: white; border: none;">
+                            style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none;">
                             <h5 class="modal-title" style="font-weight: 600;">
-                                <i class="mdi mdi-file-document me-2"></i>File Scan Nilai - {{ $item->magang->nama_siswa }}
+                                <i class="mdi mdi-certificate me-2"></i>Sertifikat PKL - {{ $item->nilaiPkl->nama_siswa }}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 style="filter: brightness(0) invert(1);"></button>
                         </div>
                         <div class="modal-body text-center" style="padding: 32px;">
                             @php
-                                $extension = strtolower(pathinfo($item->file_scan_nilai, PATHINFO_EXTENSION));
+                                $extension = strtolower(pathinfo($item->file_sertifikat, PATHINFO_EXTENSION));
                             @endphp
 
                             @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
-                                <img src="{{ asset('storage/scan_nilai_pkl/' . $item->file_scan_nilai) }}"
-                                    alt="Scan Nilai {{ $item->magang->nama_siswa }}" class="img-fluid"
+                                <img src="{{ asset('storage/sertifikat_pkl/' . $item->file_sertifikat) }}"
+                                    alt="Sertifikat {{ $item->nilaiPkl->nama_siswa }}" class="img-fluid"
                                     style="max-width: 100%; max-height: 70vh; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
                             @elseif($extension === 'pdf')
                                 <div class="pdf-viewer" style="height: 70vh;">
-                                    <embed src="{{ asset('storage/scan_nilai_pkl/' . $item->file_scan_nilai) }}" type="application/pdf"
+                                    <embed src="{{ asset('storage/sertifikat_pkl/' . $item->file_sertifikat) }}" type="application/pdf"
                                         style="width: 100%; height: 100%; border-radius: 12px;">
                                 </div>
                             @else
                                 <div class="file-download" style="text-align: center; padding: 40px;">
-                                    <i class="mdi mdi-file-download" style="font-size: 64px; color: #516bff; margin-bottom: 16px;"></i>
+                                    <i class="mdi mdi-certificate" style="font-size: 64px; color: #f59e0b; margin-bottom: 16px;"></i>
                                     <h4>File tidak dapat ditampilkan</h4>
-                                    <p class="text-muted">Klik tombol download untuk mengunduh file</p>
-                                    <a href="{{ asset('storage/scan_nilai_pkl/' . $item->file_scan_nilai) }}" class="btn btn-success"
+                                    <p class="text-muted">Klik tombol download untuk mengunduh sertifikat</p>
+                                    <a href="{{ asset('storage/sertifikat_pkl/' . $item->file_sertifikat) }}" class="btn btn-warning"
                                         download>
-                                        <i class="mdi mdi-download me-2"></i>Download File
+                                        <i class="mdi mdi-download me-2"></i>Download Sertifikat
                                     </a>
                                 </div>
                             @endif
 
-                            <div style="margin-top: 16px;">
-                                <h6 style="margin-bottom: 4px; font-weight: 600;">{{ $item->magang->nama_siswa }}</h6>
-                                <small style="color: #6b7280;">Nilai: {{ $item->nilai_akhir }}</small>
+                            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                                <div class="sertifikat-info"
+                                    style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;">
+                                    <div class="info-item">
+                                        <strong>Nama Siswa:</strong><br>
+                                        {{ $item->nilaiPkl->nama_siswa }}
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Nilai PKL:</strong><br>
+                                        {{ $item->nilaiPkl->nilai_akhir }}
+                                    </div>
+                                    @if($item->nomor_sertifikat)
+                                        <div class="info-item">
+                                            <strong>Nomor:</strong><br>
+                                            {{ $item->nomor_sertifikat }}
+                                        </div>
+                                    @endif
+                                    @if($item->tanggal_sertifikat)
+                                        <div class="info-item">
+                                            <strong>Tanggal:</strong><br>
+                                            {{ date('d M Y', strtotime($item->tanggal_sertifikat)) }}
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -331,7 +331,162 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .student-details h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .student-details p {
+            margin: 0;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .nilai-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+            min-width: 40px;
+            text-align: center;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        .nilai-lulus {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+        }
+
+        .nilai-tidak-lulus {
+            background: linear-gradient(135deg, #fef2f2, #fecaca);
+            color: #dc2626;
+        }
+
+        .nilai-status {
+            font-size: 11px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .nomor-sertifikat,
+        .tanggal-sertifikat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .nomor-sertifikat i,
+        .tanggal-sertifikat i {
+            color: #d58df7;
+            font-size: 16px;
+        }
+
+        .status-tersertifikat {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fff7ed, #fed7aa);
+            color: #ea580c;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .btn-file-sertifikat {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            color: #92400e;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-file-sertifikat:hover {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            transform: translateY(-1px);
+        }
+
+        .action-btn-table.download {
+            background: #10b981;
+            color: white;
+        }
+
+        .action-btn-table.download:hover {
+            background: #059669;
+        }
+
+        .stat-card.warning {
+            background: linear-gradient(135deg, #fff7ed, #fed7aa);
+            border-left: 4px solid #f59e0b;
+        }
+
+        .stat-card.warning .stat-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .stat-card.warning .number {
+            color: #92400e;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .sertifikat-info {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .info-item {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .info-item strong {
+            color: #1f2937;
+        }
+    </style>
 
     <script>
         $(document).ready(function () {
@@ -341,7 +496,7 @@
 
             // Search functionality
             $('#searchInput').on('input', function () {
-                filterNilai();
+                filterSertifikat();
             });
 
             // Filter chips
@@ -349,13 +504,13 @@
                 $('.filter-chip').removeClass('active');
                 $(this).addClass('active');
                 currentPage = 1;
-                filterNilai();
+                filterSertifikat();
             });
 
             $('#entriesPerPage').on('change', function () {
                 entriesPerPage = parseInt($(this).val());
                 currentPage = 1;
-                filterNilai();
+                filterSertifikat();
             });
 
             $('#prevPage').on('click', function () {
@@ -373,12 +528,12 @@
                 }
             });
 
-            function filterNilai() {
+            function filterSertifikat() {
                 const searchTerm = $('#searchInput').val().toLowerCase();
                 const activeFilter = $('.filter-chip.active').data('filter');
                 filteredRows = [];
 
-                $('.nilai-row').each(function () {
+                $('.sertifikat-row').each(function () {
                     const $row = $(this);
                     const searchData = $row.data('search');
                     const status = $row.data('status');
@@ -395,7 +550,7 @@
             }
 
             function displayPage() {
-                $('.nilai-row').hide();
+                $('.sertifikat-row').hide();
 
                 const startIndex = (currentPage - 1) * entriesPerPage;
                 const endIndex = Math.min(startIndex + entriesPerPage, filteredRows.length);
@@ -418,7 +573,7 @@
                 $('#showingStart').text(startIndex);
                 $('#showingEnd').text(endIndex);
                 $('#totalEntries').text(filteredRows.length);
-                $('#nilaiCount').text(filteredRows.length + ' siswa');
+                $('#sertifikatCount').text(filteredRows.length + ' sertifikat');
             }
 
             function updatePaginationButtons() {
@@ -471,22 +626,13 @@
                     });
             }
 
-            // Catatan modal
-            $('.btn-detail-catatan').on('click', function () {
-                const catatan = $(this).data('catatan');
-                const nama = $(this).data('nama');
-
-                $('#catatanNamaSiswa').text(nama);
-                $('#catatanFull').text(catatan);
-            });
-
             // Delete confirmation
             $('.btn-delete').on('click', function () {
                 const form = $(this).closest('form');
 
                 Swal.fire({
                     title: 'Konfirmasi Penghapusan',
-                    html: 'Yakin ingin menghapus data nilai Magang ini?<br><b>Data tidak bisa dikembalikan!</b>',
+                    html: 'Yakin ingin menghapus data sertifikat ini?<br><b>Data tidak bisa dikembalikan!</b>',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626',
@@ -501,8 +647,27 @@
                 });
             });
 
+            // Show success/error messages
+            @if(session('success'))
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: '{{ session("success") }}',
+                    icon: 'success',
+                    confirmButtonColor: '#d58df7'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    title: 'Error!',
+                    text: '{{ session("error") }}',
+                    icon: 'error',
+                    confirmButtonColor: '#dc2626'
+                });
+            @endif
+
             // Initialize
-            filterNilai();
+            filterSertifikat();
         });
     </script>
 @endsection

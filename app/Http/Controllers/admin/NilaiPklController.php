@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\NilaiPKL;
 use App\Models\Magang;
+use App\Models\Sertifikat;
 use Illuminate\Http\Request;
 
 class NilaiPKLController extends Controller
