@@ -156,11 +156,6 @@ class SertifikatController extends Controller
             ->with('success', 'Sertifikat berhasil diperbarui & file PDF diperbarui.');
     }
 
-
-
-    /**
-     * Hapus sertifikat
-     */
     /**
      * Hapus sertifikat
      */

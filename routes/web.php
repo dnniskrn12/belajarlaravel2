@@ -19,6 +19,7 @@ use App\Http\Controllers\Superadmin\SuperAdminController;
 use App\Http\Controllers\Pimpinan\PimpinanController;
 use App\Http\Controllers\HomeController;
 use App\Models\Sertifikat;
+use App\Models\Sk_Kerja;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,4 +66,18 @@ Route::prefix('superadmin')->name('superadmin.')->middleware(['auth'])->group(fu
 
 Route::prefix('pimpinan')->name('pimpinan.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [PimpinanDashboardController::class, 'index'])->name('dashboard');
+    // Daftar pegawai
+    Route::get('/pegawai', [PegawaiController::class, 'indexPimpinan'])->name('pegawai.index');
+    Route::get('/pegawai/cetak', [PegawaiController::class, 'cetakSemua'])->name('pegawai.cetak'); // cetak semua
+    Route::get('/pegawai/{id}/cetak', [PegawaiController::class, 'cetakSatu'])->name('pegawai.cetakSatu'); // cetak satu
+    Route::get('/pegawai/{id}', [PegawaiController::class, 'showPimpinan'])->name('pegawai.show'); // detail
+    // Daftar SK Kerja
+    Route::get('/skkerja', [SkKerjaController::class, 'indexPimpinan'])->name('skkerja.index');
+    Route::get('/skkerja/cetak', [SkKerjaController::class, 'cetakSemua'])->name('skkerja.cetak');
+    Route::get('/skkerja/{id}/cetak', [SkKerjaController::class, 'cetakSatu'])->name('skkerja.cetakSatu');
+    Route::get('/skkerja/{id}', [SkKerjaController::class, 'showPimpinan'])->name('skkerja.show');
+
+
 });
+
+

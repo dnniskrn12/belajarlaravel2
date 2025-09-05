@@ -9,6 +9,7 @@ use App\Models\Jabatan;
 use App\Models\Unit_Kerja;
 use App\Models\Lokasi;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SkKerjaController extends Controller
 {
@@ -110,5 +111,40 @@ class SkKerjaController extends Controller
 
         return redirect()->route('admin.skkerja.index')
             ->with('success', 'Data SK Kerja berhasil dihapus.');
+    }
+
+    // Tampilan PImpinan
+    public function indexPimpinan()
+    {
+        $sk = Sk_Kerja::all();
+        return view('pimpinan.skkerja.index', compact('sk'));
+    }
+    public function showPimpinan(string $id)
+    {
+        $sk = Sk_Kerja::findOrFail($id);
+        return view('pimpinan.skkerja.show', compact('sk'));
+    }
+
+    // Cetak semua skkerja
+    public function cetakSemua()
+    {
+        $sk = Sk_Kerja::all();
+
+        $pdf = Pdf::loadView('pimpinan.skkerja.laporan', compact('sk'))
+            ->setPaper('a4', 'landscape');
+
+        // kembalikan path untuk modal
+        return $pdf->stream('laporan-skkerja.pdf');
+    }
+
+    // Cetak 1 skkerja (biodata)
+    public function cetakSatu($id)
+    {
+        $sk = Sk_Kerja::findOrFail($id);
+
+        $pdf = Pdf::loadView('pimpinan.skkerja.surat', compact('sk'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->stream('biodata-skkerja-' . $sk->id . '.pdf');
     }
 }

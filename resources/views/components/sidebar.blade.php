@@ -75,8 +75,8 @@
             @if(auth()->user()->role->role_name === 'pimpinan')
                     <x-sidebar.links title='Dashboard' icon='mdi mdi-home menu-icon' route='pimpinan.dashboard' />
                     <x-sidebar.dropdown id="laporan-dropdown" title="Laporan" icon="mdi mdi-folder-file-outline" :items="[
-                    ['label' => 'Data Magang', 'url' => route('admin.pegawai.index')],
-                    ['label' => 'SK Kerja', 'url' => url('pages/ui-features/dropdowns.html')],
+                    ['label' => 'Data Pegawai', 'url' => route('pimpinan.pegawai.index')],
+                    ['label' => 'SK Kerja', 'url' => route('pimpinan.skkerja.index')],
                     ['label' => 'Data Magang', 'url' => url('pages/ui-features/dropdowns.html')],
                     ['label' => 'SK Magang', 'url' => url('pages/ui-features/dropdowns.html')],
                     ['label' => 'Nilai Magang', 'url' => url('pages/ui-features/dropdowns.html')],

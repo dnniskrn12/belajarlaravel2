@@ -11,6 +11,7 @@ use App\Models\Pend_Pegawai;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PegawaiController extends Controller
 {
@@ -136,5 +137,41 @@ class PegawaiController extends Controller
         $pegawai->delete();
 
         return redirect()->route('admin.pegawai.index')->with('success', 'Data Pegawai berhasil dihapus');
+    }
+
+    // Tampilan PImpinan
+    public function indexPimpinan()
+    {
+        $pegawai = Pegawai::all();
+        return view('pimpinan.pegawai.index', compact('pegawai'));
+    }
+    public function showPimpinan(string $id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        return view('pimpinan.pegawai.show', compact('pegawai'));
+    }
+
+    // Cetak semua pegawai
+    public function cetakSemua()
+    {
+        $pegawai = Pegawai::all();
+
+        $pdf = Pdf::loadView('pimpinan.pegawai.laporan', compact('pegawai'))
+            ->setPaper('a4', 'landscape');
+
+
+        // kembalikan path untuk modal
+        return $pdf->stream('laporan-pegawai.pdf');
+    }
+
+    // Cetak 1 pegawai (biodata)
+    public function cetakSatu($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+
+        $pdf = Pdf::loadView('pimpinan.pegawai.biodata', compact('pegawai'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->stream('biodata-pegawai-' . $pegawai->id . '.pdf');
     }
 }
