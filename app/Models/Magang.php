@@ -41,4 +41,10 @@ class Magang extends Model
     {
         return $this->hasOne(Sk_Magang::class, 'no_magang', 'no_magang');
     }
+
+    public function unit_magang()
+    {
+        return $this->belongsTo(Unit_Magang::class, 'id_unitmagang');
+    }
+
 }

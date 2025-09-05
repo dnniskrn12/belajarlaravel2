@@ -8,26 +8,26 @@
             <div class="header-top" style="display: flex; align-items: center; justify-content: space-between;">
                 <div class="header-title" style="display: flex; align-items: center; gap: 12px;">
                     <div class="header-icon bg-gradient-primary">
-                        <i class="mdi mdi-account-group"></i>
+                        <i class="mdi mdi-account-school"></i>
                     </div>
                     <div>
-                        <h1 class="page-title-modern" style="margin:0;">Data Pegawai</h1>
-                        <p class="page-subtitle-modern" style="margin:0;">Informasi pegawai untuk pimpinan</p>
+                        <h1 class="page-title-modern" style="margin:0;">Data Magang</h1>
+                        <p class="page-subtitle-modern" style="margin:0;">Informasi magang untuk pimpinan</p>
                     </div>
                 </div>
                 <div class="header-breadcrumbs">
-                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'pimpinan.dashboard'], ['label' => 'Laporan Pegawai', 'route' => 'pimpinan.pegawai.index'],]" />
+                    <x-breadcrumbs :items="[['label' => 'Dashboard', 'route' => 'pimpinan.dashboard'], ['label' => 'Laporan Magang', 'route' => 'pimpinan.magang.index'],]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="search-container">
                     <i class="mdi mdi-magnify search-icon"></i>
-                    <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau nomor pegawai...">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau nomor magang...">
                 </div>
                 <div class="action-buttons">
-                    <a data-bs-toggle="modal" data-bs-target="#cetakLaporanPegawaiModal"
+                    <a data-bs-toggle="modal" data-bs-target="#cetakLaporanMagangModal"
                         class="btn-add-modern bg-gradient-success">
-                        <i class="mdi mdi-printer me-1"></i> Cetak Laporan Pegawai
+                        <i class="mdi mdi-printer me-1"></i> Cetak Laporan Magang
                     </a>
                 </div>
             </div>
@@ -38,6 +38,9 @@
                 <span class="filter-chip" data-filter="aktif">Aktif</span>
                 <span class="filter-chip" data-filter="non aktif">Tidak Aktif</span>
             </div>
+
+
+
         </div>
 
         <!-- Stats Cards -->
@@ -45,8 +48,8 @@
             <div class="stat-card total">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Total Pegawai</h3>
-                        <p class="number">{{ count($pegawai) }}</p>
+                        <h3>Total Magang</h3>
+                        <p class="number">{{ count($magang) }}</p>
                     </div>
                     <div class="stat-icon">
                         <i class="mdi mdi-account-group"></i>
@@ -57,8 +60,8 @@
             <div class="stat-card active">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3>Pegawai Aktif</h3>
-                        <p class="number">{{ $pegawai->where('status_pekerjaan', 'Aktif')->count() }}</p>
+                        <h3>Magang Aktif</h3>
+                        <p class="number">{{ $magang->where('status_magang', 'Aktif')->count() }}</p>
                     </div>
                     <div class="stat-icon">
                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
@@ -70,7 +73,7 @@
                 <div class="stat-content">
                     <div class="stat-info">
                         <h3>Tidak Aktif</h3>
-                        <p class="number">{{ $pegawai->where('status_pekerjaan', '!=', 'Aktif')->count() }}</p>
+                        <p class="number">{{ $magang->where('status_magang', '!=', 'Aktif')->count() }}</p>
                     </div>
                     <div class="stat-icon">
                         <i class="mdi mdi-close-octagon-outline"></i>
@@ -98,15 +101,14 @@
 
             <div class="pagination-info" style="color: #6b7280; font-size: 14px;">
                 Menampilkan <span id="showingStart">1</span> sampai <span id="showingEnd">10</span> dari <span
-                    id="totalEntries">{{ count($pegawai) }}</span> data
+                    id="totalEntries">{{ count($magang) }}</span> data
             </div>
         </div>
-
         <!-- Employee Table -->
         <div class="data-card">
             <div class="card-header-clean">
-                <h3 class="card-title-clean">Daftar Pegawai</h3>
-                <span class="employee-count" id="employeeCount">{{ count($pegawai) }} pegawai</span>
+                <h3 class="card-title-clean">Daftar Magang</h3>
+                <span class="employee-count" id="employeeCount">{{ count($magang) }} magang</span>
             </div>
 
             <div class="table-responsive">
@@ -114,7 +116,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Pegawai</th>
+                            <th>Magang</th>
                             <th>Informasi Personal</th>
                             <th>Kontak</th>
                             <th>Status</th>
@@ -122,18 +124,18 @@
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody">
-                        @foreach ($pegawai as $index => $item)
-                            <tr class="employee-row" data-status="{{ strtolower($item->status_pekerjaan) }}"
-                                data-search="{{ strtolower($item->nama_pegawai . ' ' . $item->no_pegawai . ' ' . $item->email) }}">
+                        @foreach ($magang as $index => $item)
+                            <tr class="employee-row" data-status="{{ strtolower($item->status_magang) }}"
+                                data-search="{{ strtolower($item->nama_siswa . ' ' . $item->no_magang . ' ' . $item->email) }}">
                                 <td class="row-number">{{ $index + 1 }}</td>
                                 <td>
                                     <div class="employee-info">
                                         <div class="employee-avatar">
-                                            {{ strtoupper(substr($item->nama_pegawai, 0, 1)) }}
+                                            {{ strtoupper(substr($item->nama_siswa, 0, 1)) }}
                                         </div>
                                         <div class="employee-details">
-                                            <h4>{{ $item->nama_pegawai }}</h4>
-                                            <p>{{ $item->no_pegawai }}</p>
+                                            <h4>{{ $item->nama_siswa }}</h4>
+                                            <p>{{ $item->no_magang }}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -168,18 +170,18 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="status-badge {{ $item->status_pekerjaan == 'Aktif' ? 'status-active' : 'status-inactive' }}">
-                                        {{ $item->status_pekerjaan }}
+                                        class="status-badge {{ $item->status_magang == 'Aktif' ? 'status-active' : 'status-inactive' }}">
+                                        {{ $item->status_magang }}
                                     </span>
                                 </td>
                                 <td>
                                     <div class="action-buttons-table">
-                                        <a href="{{route('pimpinan.pegawai.show', $item->id)}}" class="action-btn-table view"
+                                        <a href="{{route('pimpinan.magang.show', $item->id)}}" class="action-btn-table view"
                                             title="Detail">
                                             <i class="mdi mdi-account-details"></i>
                                         </a>
 
-                                        <a data-bs-toggle="modal" data-bs-target="#cetakPegawaiModal{{ $item->id}}"
+                                        <a data-bs-toggle="modal" data-bs-target="#cetakMagangModal{{ $item->id}}"
                                             class="action-btn-table download" title="Cetak">
                                             <i class="mdi mdi-printer"></i>
                                         </a>
@@ -213,47 +215,48 @@
             <!-- Empty State -->
             <div id="emptyState" class="empty-state" style="display: none;">
                 <i class="mdi mdi-account-search"></i>
-                <h3>Tidak ada data pegawai</h3>
-                <p>Tidak ada pegawai yang sesuai dengan pencarian</p>
+                <h3>Tidak ada data magang</h3>
+                <p>Tidak ada magang yang sesuai dengan pencarian</p>
             </div>
         </div>
     </div>
-    <!-- Modal Cetak Laporan Pegawai -->
-        <div style="page-break-after: always;">
-            <div class="modal fade" id="cetakLaporanPegawaiModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden;">
-                        <div class="modal-header"
-                            style="background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; border: none;">
-                            <h5 class="modal-title" style="font-weight: 600;">
-                                <i class="mdi mdi-printer me-2"></i>Cetak Semua Laporan Pegawai
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                style="filter: brightness(0) invert(1);"></button>
-                        </div>
-                        <div class="modal-body" style="padding:0; height:80vh;">
-                            <iframe src="{{ route('pimpinan.pegawai.cetak') }}"
-                                style="width:100%; height:100%; border:none;"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{-- Modal Cetak 1 Pegawai --}}
-    @foreach ($pegawai as $item)
-        <div class="modal fade" id="cetakPegawaiModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
+
+    <!-- Modal Cetak Laporan Magang -->
+    <div style="page-break-after: always;">
+        <div class="modal fade" id="cetakLaporanMagangModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden;">
                     <div class="modal-header"
                         style="background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; border: none;">
                         <h5 class="modal-title" style="font-weight: 600;">
-                            <i class="mdi mdi-printer me-2"></i>Cetak Biodata Pegawai - {{ $item->nama_pegawai }}
+                            <i class="mdi mdi-printer me-2"></i>Cetak Semua Laporan Siswa Magang
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            style="filter: brightness(0) invert(1);"></button>
+                    </div>
+                    <div class="modal-body" style="padding:0; height:80vh;">
+                        <iframe src="{{ route('pimpinan.magang.cetak') }}"
+                            style="width:100%; height:100%; border:none;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Cetak 1 Magang --}}
+    @foreach ($magang as $item)
+        <div class="modal fade" id="cetakMagangModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden;">
+                    <div class="modal-header"
+                        style="background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; border: none;">
+                        <h5 class="modal-title" style="font-weight: 600;">
+                            <i class="mdi mdi-printer me-2"></i>Cetak Biodata Magang - {{ $item->nama_siswa }}
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             style="filter: brightness(0) invert(1);"></button>
                     </div>
                     <div class="modal-body p-0" style="height: 80vh;">
-                        <iframe src="{{ route('pimpinan.pegawai.cetakSatu', $item->id) }}"
+                        <iframe src="{{ route('pimpinan.magang.cetakSatu', $item->id) }}"
                             style="width:100%; height:100%; border:none;"></iframe>
                     </div>
                 </div>
@@ -261,24 +264,9 @@
         </div>
     @endforeach
 
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var modal = document.getElementById('modalCetakBiodata');
-            var iframe = document.getElementById('iframeCetakBiodata');
-
-            modal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var url = button.getAttribute('data-url');
-                iframe.src = url;
-            });
-
-            modal.addEventListener('hidden.bs.modal', function () {
-                iframe.src = ''; // reset iframe saat modal ditutup
-            });
-        });
         $(document).ready(function () {
             let currentPage = 1;
             let entriesPerPage = 10;
@@ -369,7 +357,7 @@
                 $('#showingStart').text(startIndex);
                 $('#showingEnd').text(endIndex);
                 $('#totalEntries').text(filteredRows.length);
-                $('#employeeCount').text(filteredRows.length + ' pegawai');
+                $('#employeeCount').text(filteredRows.length + ' magang');
             }
 
             function updatePaginationButtons() {

@@ -7,6 +7,7 @@ use App\Models\Sk_Magang;
 use App\Models\Magang;
 use App\Models\Unit_Magang;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SkMagangController extends Controller
 {
@@ -107,5 +108,40 @@ class SkMagangController extends Controller
 
         return redirect()->route('admin.sksiswa.index')
             ->with('success', 'Data SK Magang berhasil dihapus.');
+    }
+
+ // Tampilan PImpinan
+    public function indexPimpinan()
+    {
+        $sk = Sk_Magang::all();
+        return view('pimpinan.skmagang.index', compact('sk'));
+    }
+    public function showPimpinan(string $id)
+    {
+        $sk = Sk_Magang::findOrFail($id);
+        return view('pimpinan.skmagang.show', compact('sk'));
+    }
+
+    // Cetak semua skmagang
+    public function cetakSemua()
+    {
+        $sk = Sk_Magang::all();
+
+        $pdf = Pdf::loadView('pimpinan.skmagang.laporan', compact('sk'))
+            ->setPaper('a4', 'landscape');
+
+        // kembalikan path untuk modal
+        return $pdf->stream('laporan-skmagang.pdf');
+    }
+
+    // Cetak 1 skmagang (biodata)
+    public function cetakSatu($id)
+    {
+        $sk = Sk_Magang::findOrFail($id);
+
+        $pdf = Pdf::loadView('pimpinan.skmagang.surat', compact('sk'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->stream('biodata-skmagang-' . $sk->id . '.pdf');
     }
 }

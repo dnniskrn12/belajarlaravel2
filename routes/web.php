@@ -18,8 +18,10 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Superadmin\SuperAdminController;
 use App\Http\Controllers\Pimpinan\PimpinanController;
 use App\Http\Controllers\HomeController;
+use App\Models\Magang;
 use App\Models\Sertifikat;
 use App\Models\Sk_Kerja;
+use App\Models\Sk_Magang;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,14 +70,25 @@ Route::prefix('pimpinan')->name('pimpinan.')->middleware(['auth'])->group(functi
     Route::get('/dashboard', [PimpinanDashboardController::class, 'index'])->name('dashboard');
     // Daftar pegawai
     Route::get('/pegawai', [PegawaiController::class, 'indexPimpinan'])->name('pegawai.index');
-    Route::get('/pegawai/cetak', [PegawaiController::class, 'cetakSemua'])->name('pegawai.cetak'); // cetak semua
-    Route::get('/pegawai/{id}/cetak', [PegawaiController::class, 'cetakSatu'])->name('pegawai.cetakSatu'); // cetak satu
-    Route::get('/pegawai/{id}', [PegawaiController::class, 'showPimpinan'])->name('pegawai.show'); // detail
+    Route::get('/pegawai/cetak', [PegawaiController::class, 'cetakSemua'])->name('pegawai.cetak');
+    Route::get('/pegawai/{id}/cetak', [PegawaiController::class, 'cetakSatu'])->name('pegawai.cetakSatu');
+    Route::get('/pegawai/{id}', [PegawaiController::class, 'showPimpinan'])->name('pegawai.show');
     // Daftar SK Kerja
     Route::get('/skkerja', [SkKerjaController::class, 'indexPimpinan'])->name('skkerja.index');
     Route::get('/skkerja/cetak', [SkKerjaController::class, 'cetakSemua'])->name('skkerja.cetak');
     Route::get('/skkerja/{id}/cetak', [SkKerjaController::class, 'cetakSatu'])->name('skkerja.cetakSatu');
-    Route::get('/skkerja/{id}', [SkKerjaController::class, 'showPimpinan'])->name('skkerja.show');
+    // Daftar Magang
+    Route::get('/magang', [MagangController::class, 'indexPimpinan'])->name('magang.index');
+    Route::get('/magang/cetak', [MagangController::class, 'cetakSemua'])->name('magang.cetak');
+    Route::get('/magang/{id}/cetak', [MagangController::class, 'cetakSatu'])->name('magang.cetakSatu');
+    Route::get('/magang/{id}', [MagangController::class, 'showPimpinan'])->name('magang.show');
+    // Daftar SK Magang
+    Route::get('/sksiswa', [SkMagangController::class, 'indexPimpinan'])->name('sksiswa.index');
+    Route::get('/sksiswa/cetak', [SkMagangController::class, 'cetakSemua'])->name('sksiswa.cetak');
+    Route::get('/sksiswa/{id}/cetak', [SkMagangController::class, 'cetakSatu'])->name('sksiswa.cetakSatu');
+    // Sertifikat
+    Route::get('/sertifikat', [SertifikatController::class, 'indexPimpinan'])->name('sertifikat.index');
+    Route::get('/sertifikat/cetak', [SertifikatController::class, 'cetakSemua'])->name('sertifikat.cetak');
 
 
 });

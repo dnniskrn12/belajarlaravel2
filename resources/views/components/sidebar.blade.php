@@ -77,10 +77,9 @@
                     <x-sidebar.dropdown id="laporan-dropdown" title="Laporan" icon="mdi mdi-folder-file-outline" :items="[
                     ['label' => 'Data Pegawai', 'url' => route('pimpinan.pegawai.index')],
                     ['label' => 'SK Kerja', 'url' => route('pimpinan.skkerja.index')],
-                    ['label' => 'Data Magang', 'url' => url('pages/ui-features/dropdowns.html')],
-                    ['label' => 'SK Magang', 'url' => url('pages/ui-features/dropdowns.html')],
-                    ['label' => 'Nilai Magang', 'url' => url('pages/ui-features/dropdowns.html')],
-                    ['label' => 'Sertifikat', 'url' => url('pages/ui-features/dropdowns.html')],
+                    ['label' => 'Data Magang', 'url' => route('pimpinan.magang.index')],
+                    ['label' => 'SK Magang', 'url' => route('pimpinan.sksiswa.index')],
+                    ['label' => 'Sertifikat', 'url' => route('pimpinan.sertifikat.index')],
                 ]" />
             @endif
 

@@ -195,4 +195,42 @@ class SertifikatController extends Controller
 
         return $pdf->download('sertifikat-' . $sertifikat->nomor_sertifikat . '.pdf');
     }
+
+public function indexPimpinan()
+{
+    $sertifikat = Sertifikat::all();
+
+    // Hitung yang belum tersertifikat
+    $belumTersertifikat = Sertifikat::whereNull('file_sertifikat')->count();
+
+    // Hitung juga yang sudah tersertifikat
+    $sudahTersertifikat = Sertifikat::whereNotNull('file_sertifikat')->count();
+
+    // Hitung total
+    $total = $sertifikat->count();
+
+    // Hitung total bulan ini berdasarkan tanggal sertifikat
+    $totalBulanIni = Sertifikat::whereMonth('tanggal_sertifikat', now()->month)
+        ->whereYear('tanggal_sertifikat', now()->year)
+        ->count();
+
+    return view('pimpinan.sertifikat.index', compact(
+        'sertifikat',
+        'belumTersertifikat',
+        'sudahTersertifikat',
+        'total',
+        'totalBulanIni'
+    ));
+}
+
+    public function cetakSemua()
+    {
+        $sertifikat = Sertifikat::all();
+
+        $pdf = Pdf::loadView('pimpinan.sertifikat.laporan', compact('sertifikat'))
+            ->setPaper('a4', 'landscape');
+
+        // kembalikan path untuk modal
+        return $pdf->stream('laporan-sertifikat.pdf');
+    }
 }

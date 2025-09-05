@@ -18,21 +18,17 @@
                 </div>
                 <div class="header-breadcrumbs">
                     <x-breadcrumbs :items="[
-            ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
-            ['label' => 'Magang', 'route' => 'admin.magang.index'],
-            ['label' => 'Detail', 'route' => ['admin.magang.show', $magang->id]],
+            ['label' => 'Dashboard', 'route' => 'pimpinan.dashboard'],
+            ['label' => 'Laporan Magang', 'route' => 'pimpinan.magang.index'],
+            ['label' => 'Detail', 'route' => ['pimpinan.magang.show', $magang->id]],
         ]" />
                 </div>
             </div>
             <div class="action-bar">
                 <div class="action-buttons">
-                    <a href="{{ route('admin.magang.index') }}" class="btn-filter">
+                    <a href="{{ route('pimpinan.magang.index') }}" class="btn-filter">
                         <i class="mdi mdi-arrow-left"></i>
                         Kembali
-                    </a>
-                    <a href="{{ route('admin.magang.edit', $magang->id) }}" class="btn-add-modern bg-gradient-primary">
-                        <i class="mdi mdi-pencil"></i>
-                        Edit Data
                     </a>
                 </div>
             </div>

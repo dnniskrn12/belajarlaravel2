@@ -8,6 +8,7 @@ use App\Models\Magang;
 use App\Models\Jenjang;
 use App\Models\Pend_Magang;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MagangController extends Controller
 {
@@ -150,4 +151,42 @@ class MagangController extends Controller
         return redirect()->route('admin.magang.index')
             ->with('success', 'Data magang berhasil dihapus');
     }
+
+    // Tampilan PImpinan
+    public function indexPimpinan()
+    {
+        $magang = Magang::all();
+        return view('pimpinan.magang.index', compact('magang'));
+    }
+    public function showPimpinan(string $id)
+    {
+        $magang = Magang::findOrFail($id);
+        return view('pimpinan.magang.show', compact('magang'));
+    }
+
+    // Cetak semua magang
+    public function cetakSemua()
+    {
+        $magang = Magang::all();
+
+        $pdf = Pdf::loadView('pimpinan.magang.laporan', compact('magang'))
+            ->setPaper('a4', 'landscape');
+
+
+        // kembalikan path untuk modal
+        return $pdf->stream('laporan-magang.pdf');
+    }
+
+    // Cetak 1 magang (biodata)
+    public function cetakSatu($id)
+{
+    $magang = Magang::findOrFail($id);
+
+    $pdf = Pdf::loadView('pimpinan.magang.biodata', compact('magang'))
+        ->setPaper('A4', 'portrait');
+
+    return $pdf->stream('biodata-magang-' . $magang->id . '.pdf');
+}
+
+
 }
