@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Superadmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Pimpinan\DashboardController as PimpinanDashboardController;
+use App\Http\Controllers\Profile;
 use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SkKerjaController;
 use App\Http\Controllers\Admin\MagangController;
@@ -25,13 +26,19 @@ use App\Models\Sk_Magang;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
+
+Route::get('/home', function () {
+    return view('dashboard');
+})->name('home');
+
+// Login
 Route::get('/', function () {
     return view('auth.login');
 });
-
-Route::get('/home', function () {
-    return view('dashboard'); // ganti dengan view yang kamu punya
-})->name('home');
+Route::get('/', function () {
+    return redirect('/login');
+});
 
 // Logout
 Route::get('/logout', function () {
@@ -40,10 +47,6 @@ Route::get('/logout', function () {
 });
 
 Auth::routes();
-
-Route::get('/', function () {
-    return redirect('/login');
-});
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');

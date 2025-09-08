@@ -12,4 +12,11 @@ class Unit_Kerja extends Model
         'id_unitkerja',
         'nama_unitkerja',
     ];
+
+ // Relasi ke SK Kerja
+    public function skKerja()
+    {
+        return $this->hasMany(Sk_Kerja::class, 'id_unitkerja', 'id');
+    }
+
 }

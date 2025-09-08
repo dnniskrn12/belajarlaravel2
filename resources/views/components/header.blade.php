@@ -54,12 +54,12 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu dropdown-menu-end navbar-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-cached me-2 text-success"></i> Activity Log
+                            <i class="mdi mdi-account-circle me-2 text-success"></i> Profil User
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout me-2 text-primary"></i> Signout
+                            <i class="mdi mdi-logout me-2 text-danger"></i> Signout
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf

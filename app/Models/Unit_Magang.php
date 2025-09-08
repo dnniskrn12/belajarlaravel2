@@ -15,7 +15,7 @@ class Unit_Magang extends Model
 
     public function skMagang()
     {
-        return $this->hasMany(Sk_Magang::class, 'id_unitmagang');
+        return $this->hasMany(Sk_Magang::class, 'id_unitmagang', 'id');
     }
     public function nilai_pkl()
     {

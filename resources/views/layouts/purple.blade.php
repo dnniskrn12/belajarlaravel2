@@ -97,9 +97,9 @@
                         title: "Berhasil!",
                         text: "{{ session('success') }}",
                         icon: "success",
-                        showConfirmButton: false, // hilangkan tombol OK
-                        timer: 1500, // durasi muncul (ms), misal 1,5 detik
-                        timerProgressBar: true // optional, tampil progress bar
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
                     });
                 @endif
 
