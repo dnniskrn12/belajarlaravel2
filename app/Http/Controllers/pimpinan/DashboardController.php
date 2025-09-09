@@ -27,10 +27,7 @@ class DashboardController extends Controller
             'sertifikat_count' => $jumlahSertifikat
         ]);
 
-        // ===============================
         // Pegawai per cluster (Unit Kerja)
-        // ===============================
-        // Gunakan nama field yang benar dari model
         $unitKerja = Unit_Kerja::withCount('skKerja')->get();
         $labelsPegawaiCluster = $unitKerja->pluck('nama_unitkerja')->toArray(); // Perbaikan nama field
         $dataPegawaiCluster = $unitKerja->pluck('sk_kerja_count')->toArray();
@@ -47,10 +44,7 @@ class DashboardController extends Controller
             $dataPegawaiCluster = $pegawaiPerUnit->pluck('total')->toArray();
         }
 
-        // ===============================
         // Magang per cluster (Unit Magang)
-        // ===============================
-        // Gunakan nama field yang benar dari model
         $unitMagang = Unit_Magang::withCount('skMagang')->get();
         $labelsMagangCluster = $unitMagang->pluck('nama_unitmagang')->toArray(); // Perbaikan nama field
         $dataMagangCluster = $unitMagang->pluck('sk_magang_count')->toArray();
@@ -67,9 +61,7 @@ class DashboardController extends Controller
             $dataMagangCluster = $magangPerUnit->pluck('total')->toArray();
         }
 
-        // ===============================
         // Status Pegawai
-        // ===============================
         $statusPegawaiQuery = Pegawai::select('status_pekerjaan', DB::raw('count(*) as total'))
             ->whereNotNull('status_pekerjaan')
             ->groupBy('status_pekerjaan')
@@ -78,9 +70,7 @@ class DashboardController extends Controller
         $statusPegawai = $statusPegawaiQuery->isEmpty() ?
             collect(['Tidak Ada Data' => 0]) : $statusPegawaiQuery;
 
-        // ===============================
         // Status Magang
-        // ===============================
         $statusMagangQuery = Magang::select('status_magang', DB::raw('count(*) as total'))
             ->whereNotNull('status_magang')
             ->groupBy('status_magang')
@@ -89,9 +79,7 @@ class DashboardController extends Controller
         $statusMagang = $statusMagangQuery->isEmpty() ?
             collect(['Tidak Ada Data' => 0]) : $statusMagangQuery;
 
-        // ===============================
         // Gender Pegawai
-        // ===============================
         $genderPegawaiQuery = Pegawai::select('jenis_kelamin', DB::raw('count(*) as total'))
             ->whereNotNull('jenis_kelamin')
             ->groupBy('jenis_kelamin')
@@ -100,9 +88,7 @@ class DashboardController extends Controller
         $genderPegawai = $genderPegawaiQuery->isEmpty() ?
             collect(['Tidak Ada Data' => 0]) : $genderPegawaiQuery;
 
-        // ===============================
         // Gender Magang
-        // ===============================
         $genderMagangQuery = Magang::select('jenis_kelamin', DB::raw('count(*) as total'))
             ->whereNotNull('jenis_kelamin')
             ->groupBy('jenis_kelamin')

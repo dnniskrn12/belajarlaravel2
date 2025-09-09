@@ -53,7 +53,7 @@
 
                     <!-- Dropdown -->
                     <div class="dropdown-menu dropdown-menu-end navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route ('profile.edit')}}">
                             <i class="mdi mdi-account-circle me-2 text-success"></i> Profil User
                         </a>
                         <div class="dropdown-divider"></div>

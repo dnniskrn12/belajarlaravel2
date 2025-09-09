@@ -155,14 +155,20 @@
             </p>
 
         </div>
-
+@php
+    $kepalaDinas = \App\Models\User::whereHas('role', function($q) {
+        $q->where('name', 'pimpinan');
+    })->first();
+@endphp
         <div class="signature-section" style="width: 100%; margin-top: 50px; text-align: right;">
             <div class="signature-block" style="display: inline-block; text-align: center;">
                 <p>Kediri, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
                 <p style="margin: 0;">Kepala Dinas Komunikasi dan Informatika</p>
                 <div style="height: 100px;"></div> <!-- ruang tanda tangan -->
                 <p style="margin: 0; font-weight: bold; text-decoration: underline;">Nama Kepala Dinas</p>
-                <p style="margin: 0;">Kepala Dinas</p>
+                <p style="margin: 0; font-weight: bold; text-decoration: underline;">
+    {{ $kepalaDinas ? $kepalaDinas->username : 'Belum Ada Pimpinan' }}
+</p>
             </div>
         </div>
 </body>

@@ -88,7 +88,6 @@ class SkKerjaController extends Controller
 
         $request->validate([
             'no_sk'        => 'required|unique:sk_kerja,no_sk,' . $sk->id,
-            'no_pegawai'   => 'required|exists:pegawai,no_pegawai',
             'id_jabatan'   => 'required|exists:jabatan,id',
             'id_unitkerja' => 'required|exists:unit_kerja,id',
             'id_lokasi'    => 'required|exists:lokasi,id',

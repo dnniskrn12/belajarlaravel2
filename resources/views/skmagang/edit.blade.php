@@ -82,7 +82,7 @@
                                 <i class="mdi mdi-office-building"></i> Unit Magang Lama
                             </label>
                             <input type="text" class="form-input-modern readonly"
-                                value="{{ $sk->unitmagang?->nama_unitmagang }}" readonly>
+                                value="{{ $sk->unit_magang?->nama_unitmagang }}" readonly>
                         </div>
 
                     </div>

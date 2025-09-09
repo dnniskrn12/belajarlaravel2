@@ -114,7 +114,8 @@
 
         });
         </script>
-@stack('script')
+@stack('scripts')
+@stack('styles')
 </body>
 
 </html>

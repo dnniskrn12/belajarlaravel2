@@ -102,7 +102,7 @@
                                     </div>
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($item->tgl_sk)->format('d-m-Y') }}</td>
-                                <td>{{ $item->unitmagang?->nama_unitmagang }}</td>
+                                <td>{{ $item->unit_magang?->nama_unitmagang }}</td>
                                 <td>
                                     <div class="action-buttons-table">
                                         <a href="{{ route('admin.sksiswa.edit', $item->id) }}" class="action-btn-table edit"
